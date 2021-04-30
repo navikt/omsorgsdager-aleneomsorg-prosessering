@@ -12,7 +12,7 @@ val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
 val handlebarsVersion = "4.1.2"
 
-val mainClass = "no.nav.helse.MidlertidigAleneProsesseringKt"
+val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
 plugins {
     kotlin("jvm") version "1.4.32"
