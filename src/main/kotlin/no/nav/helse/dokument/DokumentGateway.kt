@@ -137,7 +137,7 @@ class DokumentGateway(
             )
 
         val (request, _, result) = Operation.monitored(
-            app = "omsorgspenger-midlertidig-alene-prosessering",
+            app = "omsorgsdager-aleneomsorg-prosessering",
             operation = SLETTE_DOKUMENT_OPERATION,
             resultResolver = { 204 == it.second.statusCode }
         ) {
@@ -169,7 +169,7 @@ class DokumentGateway(
             factor = 2.0
         ) {
             val (request, response, result) = Operation.monitored(
-                app = "omsorgspenger-midlertidig-alene-prosessering",
+                app = "omsorgsdager-aleneomsorg-prosessering",
                 operation = LAGRE_DOKUMENT_OPERATION,
                 resultResolver = { 201 == it.second.statusCode }
             ) {

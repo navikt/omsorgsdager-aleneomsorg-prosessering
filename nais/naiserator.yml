@@ -44,8 +44,8 @@ spec:
     enabled: true
     path: /metrics
   envFrom:
-    - secret: omsorgspenger-midlertidig-alene-prosessering.sts-credentials
-    - secret: omsorgspenger-midlertidig-alene-prosessering.apigw-apikey
+    - secret: omsorgsdager-aleneomsorg-prosessering.sts-credentials
+    - secret: omsorgsdager-aleneomsorg-prosessering.apigw-apikey
   env:
   {{#each env}}
      - name: {{@key}}

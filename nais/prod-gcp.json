@@ -1,5 +1,5 @@
 {
-  "app": "omsorgspenger-midlertidig-alene-prosessering",
+  "app": "omsorgsdager-aleneomsorg-prosessering",
   "cluster": "prod-gcp",
   "namespace": "dusseldorf",
   "team": "dusseldorf",
@@ -14,5 +14,5 @@
     "KAFKA_AUTO_OFFSET_RESET": "none"
   },
   "slack-channel": "sif-alerts",
-  "slack-notify-type": "<!channel> | omsorgspenger-midlertidig-alene-prosessering | "
+  "slack-notify-type": "<!channel> | omsorgsdager-aleneomsorg-prosesseringing | "
 }

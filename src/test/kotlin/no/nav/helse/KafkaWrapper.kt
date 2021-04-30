@@ -9,7 +9,7 @@ import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import no.nav.helse.prosessering.v1.asynkron.Topics.CLEANUP
 import no.nav.helse.prosessering.v1.asynkron.Topics.MOTTATT
 import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSSESERT
-import no.nav.helse.prosessering.v1.asynkron.midlertidigAleneKonfigurertMapper
+import no.nav.helse.prosessering.v1.asynkron.aleneomsorgKonfigurertMapper
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -115,7 +115,7 @@ fun KafkaProducer<String, TopicEntry>.leggTilMottak(soknad: MeldingV1) {
                     correlationId = UUID.randomUUID().toString(),
                     requestId = UUID.randomUUID().toString()
                 ),
-                data = Data(midlertidigAleneKonfigurertMapper().writeValueAsString(soknad))
+                data = Data(aleneomsorgKonfigurertMapper().writeValueAsString(soknad))
             )
         )
     ).get()

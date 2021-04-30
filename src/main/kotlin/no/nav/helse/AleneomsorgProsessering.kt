@@ -31,12 +31,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URI
 
-private val logger: Logger = LoggerFactory.getLogger("nav.MidlertidigAleneProsessering")
+private val logger: Logger = LoggerFactory.getLogger("nav.AleneomsorgProsessering")
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @KtorExperimentalAPI
-fun Application.midlertidigAleneProsessering() {
+fun Application.aleneomsorgProsessering() {
     logProxyProperties()
     DefaultExports.initialize()
 

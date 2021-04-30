@@ -87,7 +87,7 @@ class JoarkGateway(
             )
 
         val (request, response, result) = Operation.monitored(
-            app = "omsorgspenger-midlertidig-alene-prosessering",
+            app = "omsorgsdager-aleneomsorg-prosessering",
             operation = JOURNALFORING_OPERATION,
             resultResolver = { 201 == it.second.statusCode }
         ) { httpRequest.awaitStringResponseResult() }

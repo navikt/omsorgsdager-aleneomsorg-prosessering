@@ -8,9 +8,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
-class MidlertidigAleneProsesseringWithMocks {
+class AleneomsorgProsesseringWithMocks {
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(MidlertidigAleneProsesseringWithMocks::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(AleneomsorgProsesseringWithMocks::class.java)
 
         @JvmStatic
         fun main(args: Array<String>) {

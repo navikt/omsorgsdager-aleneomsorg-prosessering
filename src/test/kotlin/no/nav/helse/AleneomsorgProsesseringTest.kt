@@ -27,12 +27,12 @@ import kotlin.test.assertNotNull
 
 
 @KtorExperimentalAPI
-class MidlertidigAleneProsesseringTest {
+class AleneomsorgProsesseringTest {
 
     @KtorExperimentalAPI
     private companion object {
 
-        private val logger: Logger = LoggerFactory.getLogger(MidlertidigAleneProsesseringTest::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(AleneomsorgProsesseringTest::class.java)
 
         private val wireMockServer: WireMockServer = WireMockBuilder()
             .withAzureSupport()

@@ -1,17 +1,17 @@
 {
   "topics": [
     {
-      "topicName": "privat-omsorgspenger-midlertidig-alene-mottatt",
+      "topicName": "privat-omsorgsdager-aleneomsorg-mottatt",
       "configEntries": {
         "retention.ms": 2628000000
       },
       "members": [
         {
-          "member": "srv-oms-alene-mtk",
+          "member": "srv-omd-alene-api",
           "role": "PRODUCER"
         },
         {
-          "member": "srv-oms-alene-prs",
+          "member": "srv-omd-alene-prs",
           "role": "CONSUMER"
         },
         {
@@ -30,17 +30,17 @@
       "numPartitions": 3
     },
     {
-      "topicName": "privat-omsorgspenger-midlertidig-alene-preprossesert",
+      "topicName": "privat-omsorgsdager-aleneomsorg-preprossesert",
       "configEntries": {
         "retention.ms": 2628000000
       },
       "members": [
         {
-          "member": "srv-oms-alene-prs",
+          "member": "srv-omd-alene-prs",
           "role": "PRODUCER"
         },
         {
-          "member": "srv-oms-alene-prs",
+          "member": "srv-omd-alene-prs",
           "role": "CONSUMER"
         },
         {
@@ -59,17 +59,17 @@
       "numPartitions": 3
     },
     {
-      "topicName": "privat-omsorgspenger-midlertidig-alene-cleanup",
+      "topicName": "privat-omsorgsdager-aleneomsorg-cleanup",
       "configEntries": {
         "retention.ms": 2628000000
       },
       "members": [
         {
-          "member": "srv-oms-alene-prs",
+          "member": "srv-omd-alene-prs",
           "role": "PRODUCER"
         },
         {
-          "member": "srv-oms-alene-prs",
+          "member": "srv-omd-alene-prs",
           "role": "CONSUMER"
         },
         {

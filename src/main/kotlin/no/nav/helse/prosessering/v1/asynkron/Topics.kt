@@ -34,26 +34,26 @@ internal data class Topic(
 
 internal object Topics {
     val MOTTATT = Topic(
-        name = "privat-omsorgspenger-midlertidig-alene-mottatt",
+        name = "privat-omsorgsdager-aleneomsorg-mottatt",
         serDes = SerDes()
     )
 
     val PREPROSSESERT = Topic(
-        name = "privat-omsorgspenger-midlertidig-alene-preprossesert",
+        name = "privat-omsorgsdager-aleneomsorg-preprossesert",
         serDes = SerDes()
     )
 
     val CLEANUP = Topic(
-        name = "privat-omsorgspenger-midlertidig-alene-cleanup",
+        name = "privat-omsorgsdager-aleneomsorg-cleanup",
         serDes = SerDes()
     )
 
 }
 
-internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
-internal fun TopicEntry.deserialiserTilMelding(): MeldingV1 = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
-internal fun TopicEntry.deserialiserTilPreprosessertMelding(): PreprossesertMeldingV1  = midlertidigAleneKonfigurertMapper().readValue(data.rawJson)
-internal fun Any.serialiserTilData() = Data(midlertidigAleneKonfigurertMapper().writeValueAsString(this))
+internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = aleneomsorgKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilMelding(): MeldingV1 = aleneomsorgKonfigurertMapper().readValue(data.rawJson)
+internal fun TopicEntry.deserialiserTilPreprosessertMelding(): PreprossesertMeldingV1  = aleneomsorgKonfigurertMapper().readValue(data.rawJson)
+internal fun Any.serialiserTilData() = Data(aleneomsorgKonfigurertMapper().writeValueAsString(this))
 
 class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {}
@@ -89,7 +89,7 @@ data class TopicEntry(val rawJson: String) {
     val data = Data(dataJson.toString())
 }
 
-fun midlertidigAleneKonfigurertMapper(): ObjectMapper {
+fun aleneomsorgKonfigurertMapper(): ObjectMapper {
     return jacksonObjectMapper().dusseldorfConfigured()
         .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
         .configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
