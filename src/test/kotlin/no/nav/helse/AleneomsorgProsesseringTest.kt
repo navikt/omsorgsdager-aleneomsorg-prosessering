@@ -117,6 +117,7 @@ class AleneomsorgProsesseringTest {
         kafkaTestProducer.leggTilMottak(søknad)
         cleanupConsumer
             .hentCleanupMelding(søknad.søknadId)
+        //TODO 30.04.2021 - Plukke opp fra K9-rapid og verifisere meldingen
             //.assertGyldigMelding(søknad.søknadId)
     }
 

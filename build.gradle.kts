@@ -3,9 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "1.5.3.facbbe4"
 val ktorVersion = ext.get("ktorVersion").toString()
+val k9RapidVersion = "1.0bd8bfe"
+
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
-
 val openhtmltopdfVersion = "1.0.8"
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -32,6 +33,9 @@ dependencies {
     implementation("no.nav.helse:dusseldorf-ktor-auth:$dusseldorfKtorVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
+
+    //K9-Rapid
+    implementation("no.nav.k9.rapid:alene-om-omsorgen:$k9RapidVersion")
 
     // Client
     implementation("no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")

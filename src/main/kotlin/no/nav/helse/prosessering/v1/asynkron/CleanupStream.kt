@@ -1,8 +1,6 @@
 package no.nav.helse.prosessering.v1.asynkron
 
-import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
@@ -33,6 +31,7 @@ internal class CleanupStream(
         private fun topology(dokumentService: DokumentService): Topology {
             val builder = StreamsBuilder()
             val fraCleanup = Topics.CLEANUP
+            val tilK9Rapid = Topics.K9_RAPID_V2
 
             builder
                 .stream(fraCleanup.name, fraCleanup.consumed)
@@ -52,11 +51,14 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 */
-
                         logger.trace("Dokumenter slettet.")
-                        Data("{}") //TODO 09.04.2021 - Må fikse det her
+
+                        val (id, løsning) = cleanupMelding.melding.tilBehovssekvens(entry.metadata.correlationId).keyValue
+                        logger.info("Behovssekvens $løsning") //TODO 30.04.2021 - Fjerne før prodsetting
+                        Data(løsning)
                     }
                 }
+                //.to(tilK9Rapid.name, tilK9Rapid.produced) //TODO 30.04.2021 - Fiks
             return builder.build()
         }
     }
