@@ -90,15 +90,12 @@ internal class PdfV1Generator {
                         ),
                         "id" to melding.id,
                         "barn" to melding.barn.somMapTilPdf(),
-                        "annenForelder" to melding.annenForelder.somMapTilPdf(),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,
                             "harBekreftetOpplysninger" to melding.harBekreftetOpplysninger
                         ),
                         "hjelp" to mapOf(
-                            "språk" to melding.språk?.språkTilTekst(),
-                            "periodeOver6MånederSatt" to melding.annenForelder.periodeOver6Måneder.erSatt(),
-                            "erPeriodenOver6Måneder" to melding.erPeriodeOver6Mnd()
+                            "språk" to melding.språk?.språkTilTekst()
                         )
                     )
                 )
@@ -146,19 +143,10 @@ internal class PdfV1Generator {
 
 private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomnavn $etternavn" else "$fornavn $etternavn"
 
-private fun Boolean?.erSatt() = this != null
-
 private fun String.språkTilTekst() = when (this.toLowerCase()) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this
-}
-
-private fun MeldingV1.erPeriodeOver6Mnd(): Boolean? {
-    return if(annenForelder.periodeFraOgMed == null || annenForelder.periodeTilOgMed == null) null else {
-        val differanse = ChronoUnit.DAYS.between(annenForelder.periodeFraOgMed, annenForelder.periodeTilOgMed.plusDays(1)) // plusDays(1) fordi den er eksklusiv i utregningen
-        differanse >= 182
-    }
 }
 
 private fun ZonedDateTime.norskDag() = when(dayOfWeek) {

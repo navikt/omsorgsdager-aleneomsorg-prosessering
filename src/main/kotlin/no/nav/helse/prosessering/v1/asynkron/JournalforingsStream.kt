@@ -3,6 +3,7 @@ package no.nav.helse.prosessering.v1.asynkron
 import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.joark.JoarkGateway
+import no.nav.helse.joark.JournalPostId
 import no.nav.helse.joark.Navn
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
@@ -48,8 +49,8 @@ internal class JournalforingsStream(
                         val dokumenter = preprosessertMelding.dokumentUrls
 
                         logger.info("Journalfører dokumenter: {}", dokumenter)
-
-                        val journalPostId = joarkGateway.journalfør(
+                        logger.info("HOPPER OVER JOURNALFØRING. $preprosessertMelding")
+/*                        val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,
                             norskIdent = preprosessertMelding.søker.fødselsnummer,
                             correlationId = CorrelationId(entry.metadata.correlationId),
@@ -59,8 +60,8 @@ internal class JournalforingsStream(
                                 mellomnavn = preprosessertMelding.søker.mellomnavn,
                                 etternavn = preprosessertMelding.søker.etternavn
                             )
-                        )
-
+                        )*/
+                        val journalPostId = JournalPostId("123456789")
                         logger.info("Dokumenter journalført med ID = ${journalPostId.journalpostId}.")
                         val journalfort = Journalfort(journalpostId = journalPostId.journalpostId)
 
