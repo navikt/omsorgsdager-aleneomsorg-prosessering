@@ -3,15 +3,14 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title>Omsorgsdager - Søknad om å bli regnet som alene</title>
-    <meta name="subject" content="Omsorgsdager - Søknad om å bli regnet som alene"/>
+    <title>Omsorgsdager - Melding om aleneomsorg</title>
+    <meta name="subject" content="Omsorgsdager - Melding om aleneomsorg"/>
     <meta name="author" content="nav.no"/>
     <meta name="description"
-          content="Omsorgsdager - Søknad om å bli regnet som alene {{søknadMottattDag}} {{ søknadMottatt }}"/>
+          content="Omsorgsdager - Melding om aleneomsorg {{søknadMottattDag}} {{ søknadMottatt }}"/>
     <bookmarks>
         <bookmark name="Søker" href="#søker"/>
         <bookmark name="Dine barn" href="#dineBarn"/>
-        <bookmark name="Den andre forelderen" href="#andre_forelderen"/>
         <bookmark name="Samtykke" href="#samtykke"/>
     </bookmarks>
     {{#block 'style-common' }}
@@ -19,7 +18,7 @@
 </head>
 
 <body>
-<h1 id="header">Omsorgsdager - Søknad om å bli regnet som alene</h1>
+<h1 id="header">Omsorgsdager - Melding om aleneomsorg</h1>
 <div class="nokkelinfo">
     <p><strong>Sendt til NAV</strong> {{søknadMottattDag}} {{ søknadMottatt }}</p>
     <p><strong>Språk:</strong> {{hjelp.språk}}</p>
@@ -42,44 +41,6 @@
                 </li>
             {{/each}}
         </ul>
-    </section>
-
-    <!-- ANDRE_FORELDER -->
-    <section id="andre_forelderen">
-        <h2>Den andre forelderen</h2>
-        <p class="sporsmalstekst">Hva er navnet til den andre forelderen?</p>
-        <p>{{annenForelder.navn}}</p>
-        <p class="sporsmalstekst">Hva er fødselsnummeret til den andre forelderen?</p>
-        <p>{{annenForelder.fnr}}</p>
-        <p class="sporsmalstekst">Hva er grunnen til at den andre forelderen ikke kan ta seg av barn?</p>
-        <p>{{annenForelder.situasjon}}</p>
-        {{#if annenForelder.beskrivelse}}
-            <p class="sporsmalstekst">Beskrivelse av situasjonen:</p>
-            <p class="fritekst">{{annenForelder.beskrivelse}}</p>
-        {{/if}}
-        {{#if annenForelder.periodeFraOgMed}}
-            <p class="sporsmalstekst">Perioden den andre forelderen ikke kan ta seg av barn</p>
-        <p>{{annenForelder.periodeFraOgMed}} -
-            {{#if annenForelder.periodeTilOgMed}}
-                {{annenForelder.periodeTilOgMed}}
-                {{#if hjelp.erPeriodenOver6Måneder}}
-                    (over 6 måneder)
-                {{else}}
-                    (ikke over 6 måneder)
-                {{/if}}
-            {{else}}
-                Jeg vet ikke hvor lenge perioden vil være.
-
-                {{#if hjelp.periodeOver6MånederSatt}}
-
-                    <p class="sporsmalstekst">Har perioden en varighet på minst 6 måneder?</p>
-                    <p>{{ jaNeiSvar annenForelder.periodeOver6Måneder}}</p>
-                {{/if}}
-
-            {{/if}}
-
-            </p>
-        {{/if}}
     </section>
 
     <!-- SAMTYKKE -->

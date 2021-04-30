@@ -43,12 +43,15 @@ internal class CleanupStream(
 
                         logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "kjører cleanup"))
                         logger.trace("Sletter dokumenter.")
+                        logger.info("HOPPER OVER SLETTING")  //TODO 30.04.2021 - Fjerne kommentar her og nedenfor
+/*
 
                         dokumentService.slettDokumeter(
                             urlBolks = cleanupMelding.melding.dokumentUrls,
                             dokumentEier = DokumentGateway.DokumentEier(cleanupMelding.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
+*/
 
                         logger.trace("Dokumenter slettet.")
                         Data("{}") //TODO 09.04.2021 - Må fikse det her
