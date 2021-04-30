@@ -49,7 +49,7 @@ internal class JournalforingsStream(
                         val dokumenter = preprosessertMelding.dokumentUrls
 
                         logger.info("Journalfører dokumenter: {}", dokumenter)
-                        logger.info("HOPPER OVER JOURNALFØRING. $preprosessertMelding")
+                        logger.info("HOPPER OVER JOURNALFØRING. $preprosessertMelding") //TODO 30.04.2021 - Fjerne kommentar her og nedenfor
 /*                        val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,
                             norskIdent = preprosessertMelding.søker.fødselsnummer,

@@ -35,7 +35,7 @@ internal class PreprosseseringV1Service(
         logger.trace("Generering av Oppsummerings-PDF OK.")
 
         logger.trace("Mellomlagrer Oppsummerings-PDF.")
-        logger.info("HOPPER OVER LAGRING AV DOKUMENTER")
+        logger.info("HOPPER OVER LAGRING AV DOKUMENTER") //TODO 30.04.2021 - Fjerne kommentar her og under
 /*
         val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
             pdf = søknadOppsummeringPdf,
@@ -57,7 +57,7 @@ internal class PreprosseseringV1Service(
 
         logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
         val komplettDokumentUrls = mutableListOf(listOf<URI>())
-/*        val komplettDokumentUrls = mutableListOf(
+/*        val komplettDokumentUrls = mutableListOf( //TODO 30.04.2021 - Fjerne kommentar
             listOf(
                 soknadOppsummeringPdfUrl,
                 søknadJsonUrl
