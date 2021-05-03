@@ -5,13 +5,14 @@ import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
 import org.json.JSONObject
 import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
+import java.time.ZonedDateTime
 
 class BehovssekvensTest {
 
     @Test
     fun `Sjekke at behovssekvens blir bygget opp som forventet`() {
         val melding = PreprossesertMeldingV1(
-            melding = SøknadUtils.gyldigSøknad(),
+            melding = SøknadUtils.gyldigSøknad().copy(mottatt = ZonedDateTime.parse("2021-01-01T20:28:33.213+05:30[Europe/Oslo]")),
             dokumentUrls = listOf(),
             søkerAktørId = AktørId("123456")
         )
@@ -36,7 +37,7 @@ class BehovssekvensTest {
                           "identitetsnummer": "26106923468"
                         }
                       ],
-                      "mottaksdato": "2021-04-30",
+                      "mottaksdato": "2021-01-01",
                       "versjon": "1.1.0"
                     }
                   },
