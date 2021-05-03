@@ -15,7 +15,8 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     return map {
         mapOf<String, Any?>(
             "navn" to it.navn.capitalizeName(),
-            "identitetsnummer" to it.identitetsnummer
+            "identitetsnummer" to it.identitetsnummer,
+            "aleneomsorg" to it.aleneomsorg
         )
     }
 }

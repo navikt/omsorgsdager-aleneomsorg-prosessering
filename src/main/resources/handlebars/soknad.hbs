@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title>Omsorgsdager - Melding om aleneomsorg</title>
+    <title>{{tittel}}</title>
     <meta name="subject" content="Omsorgsdager - Melding om aleneomsorg"/>
     <meta name="author" content="nav.no"/>
     <meta name="description"
-          content="Omsorgsdager - Melding om aleneomsorg {{søknadMottattDag}} {{ søknadMottatt }}"/>
+          content="{{tittel}} {{søknadMottattDag}} {{ søknadMottatt }}"/>
     <bookmarks>
         <bookmark name="Søker" href="#søker"/>
         <bookmark name="Dine barn" href="#dineBarn"/>
@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<h1 id="header">Omsorgsdager - Melding om aleneomsorg</h1>
+<h1 id="header">{{tittel}}</h1>
 <div class="nokkelinfo">
     <p><strong>Sendt til NAV</strong> {{søknadMottattDag}} {{ søknadMottatt }}</p>
     <p><strong>Språk:</strong> {{hjelp.språk}}</p>
@@ -37,7 +37,8 @@
             {{# each barn as |barn|~}}
                 <li>
                     <p><b>Navn: </b>{{barn.navn}}</p>
-                    <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
+                    <p><b>Identitetsnummer: </b>{{barn.identitetsnummer}}</p>
+                    <p><b>Har aleneomsorg for barnet: </b>{{ jaNeiSvar barn.aleneomsorg}}</p>
                 </li>
             {{/each}}
         </ul>
