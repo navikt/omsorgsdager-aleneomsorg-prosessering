@@ -15,7 +15,6 @@ import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.Ignore
-import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -46,7 +45,7 @@ class AleneomsorgProsesseringTest {
         private val kafkaEnvironment = KafkaWrapper.bootstrap()
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
 
-        private val cleanupConsumer = kafkaEnvironment.cleanupConsumer()
+        private val k9RapidConsumer = kafkaEnvironment.k9RapidV2Consumer()
 
         private val dNummerA = "55125314561"
 
@@ -84,7 +83,7 @@ class AleneomsorgProsesseringTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
-            cleanupConsumer.close()
+            k9RapidConsumer.close()
             kafkaTestProducer.close()
             stopEngine()
             kafkaEnvironment.tearDown()
@@ -111,18 +110,18 @@ class AleneomsorgProsesseringTest {
     }
 
     @Test
+    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2 og vi ikke journalfører
     fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
-        val søknad = SøknadUtils.gyldigSøknad()
+        val søknad = SøknadUtils.gyldigSøknad(id="01ARZ3NDEKTSV4RRFFQ69G5FAA")
 
         kafkaTestProducer.leggTilMottak(søknad)
-        cleanupConsumer
-            .hentCleanupMelding(søknad.søknadId)
-        //TODO 30.04.2021 - Plukke opp fra K9-rapid og verifisere meldingen
-            //.assertGyldigMelding(søknad.søknadId)
+        k9RapidConsumer
+            .hentK9RapidMelding(søknad.id)
+            .assertGyldigK9RapidFormat(søknad.id)
     }
 
     @Test
-    @Ignore
+    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2 og vi ikke journalfører
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
         val søknad = SøknadUtils.gyldigSøknad().copy(id = "01ARZ3NDEKTSV4RRFFQ69G5FAA")
 
@@ -134,19 +133,20 @@ class AleneomsorgProsesseringTest {
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
-        cleanupConsumer
-            .hentCleanupMelding(søknad.søknadId)
-            //.assertGyldigMelding(søknad.søknadId)
+        k9RapidConsumer
+            .hentK9RapidMelding(søknad.id)
+            .assertGyldigK9RapidFormat(søknad.id)
     }
 
     @Test
+    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2
     fun `Sende søknad hvor søker har D-nummer`() {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
-        val melding = cleanupConsumer
-            .hentCleanupMelding(søknad.søknadId)
-            //.assertGyldigMelding(søknad.søknadId)
+        k9RapidConsumer
+            .hentK9RapidMelding(søknad.id)
+            .assertGyldigK9RapidFormat(søknad.id)
     }
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
@@ -162,4 +162,15 @@ class AleneomsorgProsesseringTest {
         }
     }
 
+}
+
+internal fun String.assertGyldigK9RapidFormat(id: String) {
+    val rawJson = JSONObject(this)
+
+    assertEquals(rawJson.getJSONArray("@behovsrekkefølge").getString(0), "AleneOmOmsorgen")
+    assertEquals(rawJson.getString("@type"),"Behovssekvens")
+    assertEquals(rawJson.getString("@id"), id)
+
+    assertNotNull(rawJson.getString("@correlationId"))
+    assertNotNull(rawJson.getJSONObject("@behov"))
 }

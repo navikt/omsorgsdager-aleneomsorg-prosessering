@@ -36,6 +36,9 @@ internal class CleanupStream(
             builder
                 .stream(fraCleanup.name, fraCleanup.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
+                .selectKey { _, value ->
+                    value.deserialiserTilCleanup().melding.id
+                }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
                         val cleanupMelding = entry.deserialiserTilCleanup()
@@ -55,10 +58,12 @@ internal class CleanupStream(
 
                         val (id, løsning) = cleanupMelding.melding.tilBehovssekvens(entry.metadata.correlationId).keyValue
                         logger.info("Behovssekvens $løsning") //TODO 30.04.2021 - Fjerne før prodsetting
+                        logger.info("Sendes ikk til K9-Rapid enda pga manglene journalføring.")
+                        //logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "med ID: $id sendt til ${tilK9Rapid.name}"))
                         Data(løsning)
                     }
                 }
-                //.to(tilK9Rapid.name, tilK9Rapid.produced) //TODO 30.04.2021 - Fiks
+                //.to(tilK9Rapid.name, tilK9Rapid.produced)
             return builder.build()
         }
     }

@@ -11,7 +11,8 @@ object SøknadUtils {
     fun gyldigSøknad(
         søkerFødselsnummer: String = "02119970078",
         søknadId: String = UUID.randomUUID().toString(),
-        mottatt: ZonedDateTime = ZonedDateTime.now()
+        mottatt: ZonedDateTime = ZonedDateTime.now(),
+        id: String = "01ARZ3NDEKTSV4RRFFQ69G5FAV"
     ) = MeldingV1(
         språk = "nb",
         søknadId = søknadId,
@@ -24,7 +25,7 @@ object SøknadUtils {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola"
         ),
-        id = "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+        id = id,
         barn = listOf(
             Barn(
                 navn = "Ole Dole",
