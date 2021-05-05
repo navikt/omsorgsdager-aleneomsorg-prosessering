@@ -14,7 +14,7 @@ import java.time.Duration
 import java.util.*
 
 private val logger: Logger = LoggerFactory.getLogger(KafkaConfig::class.java)
-private const val ID_PREFIX = "srv-omd-alene-prs-"
+private const val ID_PREFIX = "omd-alene-prs-"
 
 internal class KafkaConfig(
     bootstrapServers: String,

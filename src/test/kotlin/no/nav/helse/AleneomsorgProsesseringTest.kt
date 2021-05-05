@@ -110,7 +110,6 @@ class AleneomsorgProsesseringTest {
     }
 
     @Test
-    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2 og vi ikke journalfører
     fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
         val søknad = SøknadUtils.gyldigSøknad(id="01ARZ3NDEKTSV4RRFFQ69G5FAA")
 
@@ -121,7 +120,7 @@ class AleneomsorgProsesseringTest {
     }
 
     @Test
-    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2 og vi ikke journalfører
+    @Ignore //TODO 05.05.2021 - Ignorert fordi vi ikke journalfører
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
         val søknad = SøknadUtils.gyldigSøknad().copy(id = "01ARZ3NDEKTSV4RRFFQ69G5FAA")
 
@@ -139,7 +138,6 @@ class AleneomsorgProsesseringTest {
     }
 
     @Test
-    @Ignore //TODO 05.05.2021 - Ignorert fordi cleanup ikke sender videre til k9-rapid-v2
     fun `Sende søknad hvor søker har D-nummer`() {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 

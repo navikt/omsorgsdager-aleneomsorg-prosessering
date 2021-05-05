@@ -49,7 +49,7 @@ internal object Topics {
     )
 
     val K9_RAPID_V2 = Topic(
-        name = "k9-rapid-v2",
+        name = "omsorgspenger.k9-rapid-v2",
         serDes = SerDes()
     )
 }
