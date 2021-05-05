@@ -1,6 +1,7 @@
 {
   "app": "omsorgsdager-aleneomsorg-prosessering",
   "cluster": "dev-gcp",
+  "kafka-pool" : "nav-dev",
   "namespace": "dusseldorf",
   "team": "dusseldorf",
   "ingresses": [],

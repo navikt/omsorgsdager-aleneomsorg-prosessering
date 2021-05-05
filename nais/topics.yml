@@ -1,0 +1,43 @@
+apiVersion: kafka.nais.io/v1
+kind: Topic
+metadata:
+  name: privat-omsorgsdager-aleneomsorg-preprossesert
+  namespace: dusseldorf
+  labels:
+    team: dusseldorf
+spec:
+  pool: {{kafka-pool}}
+  config:  # optional; all fields are optional too; defaults shown
+    cleanupPolicy: delete  # delete, compact
+    minimumInSyncReplicas: 1
+    partitions: 1
+    replication: 3  # see min/max requirements
+    retentionBytes: -1  # -1 means unlimited
+    retentionHours: 72  # -1 means unlimited
+  acl:
+    - team: dusseldorf
+      application: omsorgsdager-aleneomsorg-prosessering
+      access: readwrite
+
+---
+
+apiVersion: kafka.nais.io/v1
+kind: Topic
+metadata:
+  name: privat-omsorgsdager-aleneomsorg-cleanup
+  namespace: dusseldorf
+  labels:
+    team: dusseldorf
+spec:
+  pool: {{kafka-pool}}
+  config:  # optional; all fields are optional too; defaults shown
+    cleanupPolicy: delete  # delete, compact
+    minimumInSyncReplicas: 1
+    partitions: 1
+    replication: 3  # see min/max requirements
+    retentionBytes: -1  # -1 means unlimited
+    retentionHours: 72  # -1 means unlimited
+  acl:
+    - team: dusseldorf
+      application: omsorgsdager-aleneomsorg-prosessering
+      access: readwrite
