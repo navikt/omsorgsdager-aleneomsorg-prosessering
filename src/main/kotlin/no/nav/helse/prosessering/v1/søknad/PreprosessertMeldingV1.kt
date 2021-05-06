@@ -8,12 +8,12 @@ import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
-data class PreprossesertMeldingV1(
+data class PreprosessertMeldingV1(
     val søknadId: String,
     val mottatt: ZonedDateTime,
     val språk: String?,
     val dokumentUrls: List<List<URI>>,
-    val søker: PreprossesertSøker,
+    val søker: PreprosessertSøker,
     val id: String,
     val barn: List<Barn>,
     val harForståttRettigheterOgPlikter: Boolean,
@@ -28,7 +28,7 @@ data class PreprossesertMeldingV1(
         søknadId = melding.søknadId,
         mottatt = melding.mottatt,
         dokumentUrls = dokumentUrls,
-        søker = PreprossesertSøker(melding.søker, søkerAktørId),
+        søker = PreprosessertSøker(melding.søker, søkerAktørId),
         id = melding.id,
         barn = melding.barn,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
@@ -50,7 +50,7 @@ data class PreprossesertMeldingV1(
     }
 }
 
-data class PreprossesertSøker(
+data class PreprosessertSøker(
     val fødselsnummer: String,
     val fornavn: String,
     val mellomnavn: String?,

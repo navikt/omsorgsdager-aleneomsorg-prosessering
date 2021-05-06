@@ -1,7 +1,7 @@
 package no.nav.helse
 
 import no.nav.helse.felles.AktørId
-import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
+import no.nav.helse.prosessering.v1.søknad.PreprosessertMeldingV1
 import org.json.JSONObject
 import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
@@ -11,7 +11,7 @@ class BehovssekvensTest {
 
     @Test
     fun `Sjekke at behovssekvens blir bygget opp som forventet`() {
-        val melding = PreprossesertMeldingV1(
+        val melding = PreprosessertMeldingV1(
             melding = SøknadUtils.gyldigSøknad().copy(mottatt = ZonedDateTime.parse("2021-01-01T20:28:33.213+05:30[Europe/Oslo]")),
             dokumentUrls = listOf(),
             søkerAktørId = AktørId("123456")

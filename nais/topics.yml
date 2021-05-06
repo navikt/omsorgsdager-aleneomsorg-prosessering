@@ -1,7 +1,7 @@
 apiVersion: kafka.nais.io/v1
 kind: Topic
 metadata:
-  name: privat-omsorgsdager-aleneomsorg-preprossesert
+  name: privat-omsorgsdager-aleneomsorg-preprosessert
   namespace: dusseldorf
   labels:
     team: dusseldorf

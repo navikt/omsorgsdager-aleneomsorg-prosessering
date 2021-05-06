@@ -7,25 +7,25 @@ import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.Metadata
 import no.nav.helse.felles.SøknadId
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
-import no.nav.helse.prosessering.v1.søknad.PreprossesertMeldingV1
+import no.nav.helse.prosessering.v1.søknad.PreprosessertMeldingV1
 import org.slf4j.LoggerFactory
 import java.net.URI
 
-internal class PreprosseseringV1Service(
+internal class PreprosesseringV1Service(
     private val pdfV1Generator: PdfV1Generator,
     private val dokumentService: DokumentService
 ) {
 
     private companion object {
-        private val logger = LoggerFactory.getLogger(PreprosseseringV1Service::class.java)
+        private val logger = LoggerFactory.getLogger(PreprosesseringV1Service::class.java)
     }
 
-    internal suspend fun preprosseser(
+    internal suspend fun preprosesser(
         melding: MeldingV1,
         metadata: Metadata
-    ): PreprossesertMeldingV1 {
+    ): PreprosessertMeldingV1 {
         val søknadId = SøknadId(melding.søknadId)
-        logger.trace("Preprosseserer $søknadId")
+        logger.trace("Preprosesserer $søknadId")
 
         val correlationId = CorrelationId(metadata.correlationId)
         val dokumentEier = DokumentGateway.DokumentEier(melding.søker.fødselsnummer)
@@ -66,13 +66,13 @@ internal class PreprosseseringV1Service(
 
         logger.trace("Totalt ${komplettDokumentUrls.size} dokumentbolker.")
 
-        val preprossesertMeldingV1 = PreprossesertMeldingV1(
+        val preprosessertMeldingV1 = PreprosessertMeldingV1(
             melding = melding,
             dokumentUrls = komplettDokumentUrls.toList(),
             søkerAktørId = AktørId(melding.søker.aktørId)
         )
-        preprossesertMeldingV1.reportMetrics()
-        return preprossesertMeldingV1
+        preprosessertMeldingV1.reportMetrics()
+        return preprosessertMeldingV1
     }
 
 }

@@ -9,7 +9,7 @@ import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import no.nav.helse.prosessering.v1.asynkron.Topics.CLEANUP
 import no.nav.helse.prosessering.v1.asynkron.Topics.K9_RAPID_V2
 import no.nav.helse.prosessering.v1.asynkron.Topics.MOTTATT
-import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSSESERT
+import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSESSERT
 import no.nav.helse.prosessering.v1.asynkron.aleneomsorgKonfigurertMapper
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.apache.kafka.clients.CommonClientConfigs
@@ -35,7 +35,7 @@ object KafkaWrapper {
             withSecurity = true,
             topicNames = listOf(
                 MOTTATT.name,
-                PREPROSSESERT.name,
+                PREPROSESSERT.name,
                 CLEANUP.name,
                 K9_RAPID_V2.name
             )

@@ -1,7 +1,6 @@
 package no.nav.helse
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.*
 import io.ktor.features.*
@@ -26,7 +25,7 @@ import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.dusseldorf.ktor.metrics.MetricsRoute
 import no.nav.helse.joark.JoarkGateway
 import no.nav.helse.prosessering.v1.PdfV1Generator
-import no.nav.helse.prosessering.v1.PreprosseseringV1Service
+import no.nav.helse.prosessering.v1.PreprosesseringV1Service
 import no.nav.helse.prosessering.v1.asynkron.AsynkronProsesseringV1Service
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -64,7 +63,7 @@ fun Application.aleneomsorgProsessering() {
 
     val dokumentService = DokumentService(dokumentGateway)
 
-    val preprosseseringV1Service = PreprosseseringV1Service(
+    val preprosesseringV1Service = PreprosesseringV1Service(
         pdfV1Generator = PdfV1Generator(),
         dokumentService = dokumentService
     )
@@ -77,7 +76,7 @@ fun Application.aleneomsorgProsessering() {
 
     val asynkronProsesseringV1Service = AsynkronProsesseringV1Service(
         kafkaConfig = configuration.getKafkaConfig(),
-        preprosseseringV1Service = preprosseseringV1Service,
+        preprosesseringV1Service = preprosesseringV1Service,
         joarkGateway = joarkGateway,
         dokumentService = dokumentService
     )

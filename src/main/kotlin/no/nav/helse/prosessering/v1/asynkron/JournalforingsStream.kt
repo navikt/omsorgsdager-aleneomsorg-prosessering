@@ -1,10 +1,8 @@
 package no.nav.helse.prosessering.v1.asynkron
 
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.joark.JoarkGateway
 import no.nav.helse.joark.JournalPostId
-import no.nav.helse.joark.Navn
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
@@ -12,7 +10,6 @@ import no.nav.helse.kafka.ManagedStreamReady
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
-import java.net.URI
 
 internal class JournalforingsStream(
     joarkGateway: JoarkGateway,
@@ -35,11 +32,11 @@ internal class JournalforingsStream(
 
         private fun topology(joarkGateway: JoarkGateway): Topology {
             val builder = StreamsBuilder()
-            val fraPreprossesert = Topics.PREPROSSESERT
+            val fraPreprosessert = Topics.PREPROSESSERT
             val tilCleanup = Topics.CLEANUP
 
             val mapValues = builder
-                .stream(fraPreprossesert.name, fraPreprossesert.consumed)
+                .stream(fraPreprosessert.name, fraPreprosessert.consumed)
                 .filter { _, entry -> 1 == entry.metadata.version }
                 .mapValues { soknadId, entry ->
                     process(NAME, soknadId, entry) {
