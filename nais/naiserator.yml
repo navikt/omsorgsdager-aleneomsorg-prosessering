@@ -19,6 +19,8 @@ spec:
       external:
         - host: api-gw-q1.oera.no
         - host: oauth2.googleapis.com
+  kafka:
+    pool: {{kafka-pool}}
   liveness:
     path: isalive
     initialDelay: 20

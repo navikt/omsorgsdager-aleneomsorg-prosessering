@@ -1,7 +1,7 @@
-# Omsorgspenger midlertidig alene prosessering
+# Omsorgsdager aleneomsorg prosessering
 
-![CI / CD](https://github.com/navikt/omsorgspenger-midlertidig-alene-prosessering/workflows/CI%20/%20CD/badge.svg)
-![NAIS Alerts](https://github.com/navikt/omsorgspenger-midlertidig-alene-prosessering/workflows/Alerts/badge.svg)
+![CI / CD](https://github.com/navikt/omsorgsdager-aleneomsorg-prosessering/workflows/CI%20/%20CD/badge.svg)
+![NAIS Alerts](https://github.com/navikt/omsorgsdager-aleneomsorg-prosessering/workflows/Alerts/badge.svg)
 
 # Innholdsoversikt
 * [1. Kontekst](#1-kontekst)
@@ -11,11 +11,11 @@
 * [4. Drift og støtte](#11-drift-og-sttte)
 
 # 1. Kontekst
-Prosesseringstjeneste for søknad om å bli regnet som midlertidig alene.
+Prosesseringstjeneste for registrering av aleneomsorg i forbindelse med omsorgsdager
 
 # 2. Funksjonelle krav
-Tjenesten konsumerer meldinger fra topicen "privat-omsorgspenger-midlertidig-alene-mottatt" som 
-[omsorgspenger-midlertidig-alene-api](https://github.com/navikt/omsorgspenger-midlertidig-alene-api) har produsert. 
+Tjenesten konsumerer meldinger fra topicen "dusseldorf.privat-omsorgsdager-aleneomsorg-mottatt" som 
+[omsorgsdager-aleneomsorg-api](https://github.com/navikt/omsorgsdager-aleneomsorg-api) har produsert. 
 
 Videre blir søknaden preprosessert, pdf generert og lagret i [K9-mellomlagring](https://github.com/navikt/k9-mellomlagring). 
 
