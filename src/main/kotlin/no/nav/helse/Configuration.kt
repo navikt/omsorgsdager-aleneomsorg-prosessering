@@ -50,7 +50,6 @@ data class Configuration(private val config : ApplicationConfig) {
 
         KafkaConfig(
             bootstrapServers = bootstrapServers,
-            credentials = Pair(config.getRequiredString("nav.kafka.username", secret = false), config.getRequiredString("nav.kafka.password", secret = true)),
             trustStore = trustStore,
             keyStore = keyStore,
             exactlyOnce = trustStore != null,

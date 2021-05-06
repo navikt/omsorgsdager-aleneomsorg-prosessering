@@ -18,7 +18,6 @@ private const val ID_PREFIX = "omd-alene-prs-"
 
 internal class KafkaConfig(
     bootstrapServers: String,
-    credentials: Pair<String, String>,
     trustStore: Pair<String, String>?,
     keyStore: Pair<String, String>?,
     exactlyOnce: Boolean,
@@ -29,7 +28,7 @@ internal class KafkaConfig(
         put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
         put(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndFailExceptionHandler::class.java)
         put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset)
-        if(trustStore == null || keyStore == null) medCredentials(credentials) //For å skille mellom test/miljø
+        if(trustStore == null || keyStore == null) medCredentials(Pair("srvkafkaclient", "kafkaclient")) //For å skille mellom test/miljø
         medTrustStore(trustStore)
         medKeyStore(keyStore)
         medProcessingGuarantee(exactlyOnce)
