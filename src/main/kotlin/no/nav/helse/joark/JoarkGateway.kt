@@ -9,9 +9,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.httpPost
 import io.ktor.http.*
-import no.nav.helse.felles.CorrelationId
 import no.nav.helse.HttpError
-import no.nav.helse.auth.ApiGatewayApiKey
 import no.nav.helse.dusseldorf.ktor.client.buildURL
 import no.nav.helse.dusseldorf.ktor.health.HealthCheck
 import no.nav.helse.dusseldorf.ktor.health.Healthy
@@ -20,6 +18,7 @@ import no.nav.helse.dusseldorf.ktor.health.UnHealthy
 import no.nav.helse.dusseldorf.ktor.metrics.Operation
 import no.nav.helse.dusseldorf.oauth2.client.AccessTokenClient
 import no.nav.helse.dusseldorf.oauth2.client.CachedAccessTokenClient
+import no.nav.helse.felles.CorrelationId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
@@ -29,8 +28,7 @@ import java.time.ZonedDateTime
 class JoarkGateway(
     baseUrl: URI,
     private val accessTokenClient: AccessTokenClient,
-    private val journalforeScopes: Set<String>,
-    private val apiGatewayApiKey: ApiGatewayApiKey
+    private val journalforeScopes: Set<String>
 ) : HealthCheck {
     private companion object {
         private const val JOURNALFORING_OPERATION = "journalforing"
@@ -82,7 +80,6 @@ class JoarkGateway(
                 HttpHeaders.XCorrelationId to correlationId.value,
                 HttpHeaders.Authorization to authorizationHeader,
                 HttpHeaders.ContentType to "application/json",
-                apiGatewayApiKey.headerKey to apiGatewayApiKey.value,
                 HttpHeaders.Accept to "application/json"
             )
 

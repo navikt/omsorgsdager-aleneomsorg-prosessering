@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import java.util.*
 
-private const val omsorgspengerJoarkBaseUrl = "/helse-reverse-proxy/omsorgspenger-joark-mock"
+private const val omsorgspengerJoarkBaseUrl = "/k9-joark.dev-fss-pub.nais.io"
 private const val k9MellomlagringServiceDiscovery = "/k9-mellomlagring-mock"
 
 fun WireMockBuilder.navnOppslagConfig() = wireMockConfiguration {
