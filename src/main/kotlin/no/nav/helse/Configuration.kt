@@ -9,6 +9,7 @@ import no.nav.helse.kafka.KafkaConfig
 import java.net.URI
 import java.time.Duration
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 @KtorExperimentalAPI
 data class Configuration(private val config : ApplicationConfig) {
@@ -34,7 +35,9 @@ data class Configuration(private val config : ApplicationConfig) {
             }
         }
 
-        val autoOffsetReset = when(val offsetReset = config.getOptionalString(key = "nav.kafka.auto_offset_reset", secret = false)?.toLowerCase()) {
+        val autoOffsetReset = when (val offsetReset =
+            config.getOptionalString(key = "nav.kafka.auto_offset_reset", secret = false)
+                ?.lowercase(Locale.getDefault())) {
             null -> "none"
             "none" -> offsetReset
             "latest" -> offsetReset

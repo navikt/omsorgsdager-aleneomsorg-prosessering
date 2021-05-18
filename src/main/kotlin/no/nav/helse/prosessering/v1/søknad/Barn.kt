@@ -1,5 +1,7 @@
 package no.nav.helse.prosessering.v1.søknad
 
+import java.util.*
+
 data class Barn (
     val navn: String,
     val aktørId: String?,
@@ -21,4 +23,4 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
     }
 }
 
-fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
+fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase(Locale.getDefault()).capitalize() }
