@@ -1,6 +1,9 @@
 package no.nav.helse
 
-import no.nav.helse.prosessering.v1.søknad.*
+import no.nav.helse.prosessering.v1.søknad.Barn
+import no.nav.helse.prosessering.v1.søknad.MeldingV1
+import no.nav.helse.prosessering.v1.søknad.Søker
+import no.nav.helse.prosessering.v1.søknad.TidspunktForAleneomsorg
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*
@@ -31,19 +34,20 @@ object SøknadUtils {
                 navn = "Ole Dole",
                 identitetsnummer = "29076523302",
                 aktørId = null,
-                aleneomsorg = true
+                tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
+                dato = LocalDate.now().minusMonths(4)
             ),
             Barn(
                 navn = "Emil",
                 identitetsnummer = "26106923468",
                 aktørId = null,
-                aleneomsorg = true
+                tidspunktForAleneomsorg = TidspunktForAleneomsorg.TIDLIGERE
             ),
             Barn(
                 navn = "Oliver",
                 identitetsnummer = "07097427806",
                 aktørId = null,
-                aleneomsorg = false
+                tidspunktForAleneomsorg = TidspunktForAleneomsorg.TIDLIGERE
             )
         ),
         harBekreftetOpplysninger = true,
