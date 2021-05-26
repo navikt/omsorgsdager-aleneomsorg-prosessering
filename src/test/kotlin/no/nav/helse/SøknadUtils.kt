@@ -4,6 +4,12 @@ import no.nav.helse.prosessering.v1.søknad.Barn
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.Søker
 import no.nav.helse.prosessering.v1.søknad.TidspunktForAleneomsorg
+import no.nav.k9.søknad.Søknad
+import no.nav.k9.søknad.felles.Versjon
+import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
+import no.nav.k9.søknad.felles.type.Periode
+import no.nav.k9.søknad.felles.type.SøknadId
+import no.nav.k9.søknad.ytelse.omsorgspenger.utvidetrett.v1.OmsorgspengerAleneOmsorg
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*
@@ -15,7 +21,6 @@ object SøknadUtils {
         søkerFødselsnummer: String = "02119970078",
         søknadId: String = UUID.randomUUID().toString(),
         mottatt: ZonedDateTime = ZonedDateTime.now(),
-        id: String = "01ARZ3NDEKTSV4RRFFQ69G5FAV"
     ) = MeldingV1(
         språk = "nb",
         søknadId = søknadId,
@@ -28,7 +33,6 @@ object SøknadUtils {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola"
         ),
-        id = id,
         barn = listOf(
             Barn(
                 navn = "Ole Dole",
@@ -36,19 +40,19 @@ object SøknadUtils {
                 aktørId = null,
                 tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
                 dato = LocalDate.now().minusMonths(4)
-            ),
-            Barn(
-                navn = "Emil",
-                identitetsnummer = "26106923468",
-                aktørId = null,
-                tidspunktForAleneomsorg = TidspunktForAleneomsorg.TIDLIGERE
-            ),
-            Barn(
-                navn = "Oliver",
-                identitetsnummer = "07097427806",
-                aktørId = null,
-                tidspunktForAleneomsorg = TidspunktForAleneomsorg.TIDLIGERE
             )
+        ),
+        k9Søknad = Søknad(
+            SøknadId(søknadId),
+            Versjon.of("1.0.0"),
+            mottatt,
+            no.nav.k9.søknad.felles.personopplysninger.Søker(NorskIdentitetsnummer.of(søkerFødselsnummer)),
+            OmsorgspengerAleneOmsorg(
+                no.nav.k9.søknad.felles.personopplysninger.Barn(NorskIdentitetsnummer.of("29076523302")),
+                Periode(mottatt.toLocalDate(), null),
+                ""
+            )
+
         ),
         harBekreftetOpplysninger = true,
         harForståttRettigheterOgPlikter = true

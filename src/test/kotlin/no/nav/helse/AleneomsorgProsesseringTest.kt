@@ -12,9 +12,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
+import no.nav.k9.søknad.JsonUtils
+import no.nav.k9.søknad.Søknad
 import org.json.JSONObject
 import org.junit.AfterClass
 import org.junit.Ignore
+import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.time.Duration
@@ -44,8 +47,7 @@ class AleneomsorgProsesseringTest {
 
         private val kafkaEnvironment = KafkaWrapper.bootstrap()
         private val kafkaTestProducer = kafkaEnvironment.meldingsProducer()
-
-        private val k9RapidConsumer = kafkaEnvironment.k9RapidV2Consumer()
+        private val cleanupKonsumer = kafkaEnvironment.cleanupKonsumer()
 
         private val dNummerA = "55125314561"
 
@@ -83,7 +85,7 @@ class AleneomsorgProsesseringTest {
         fun tearDown() {
             logger.info("Tearing down")
             wireMockServer.stop()
-            k9RapidConsumer.close()
+            cleanupKonsumer.close()
             kafkaTestProducer.close()
             stopEngine()
             kafkaEnvironment.tearDown()
@@ -111,18 +113,18 @@ class AleneomsorgProsesseringTest {
 
     @Test
     fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
-        val søknad = SøknadUtils.gyldigSøknad(id="01ARZ3NDEKTSV4RRFFQ69G5FAA")
+        val søknad = SøknadUtils.gyldigSøknad()
 
         kafkaTestProducer.leggTilMottak(søknad)
-        k9RapidConsumer
-            .hentK9RapidMelding(søknad.id)
-            .assertGyldigK9RapidFormat(søknad.id)
+        cleanupKonsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     @Test
     @Ignore //TODO 05.05.2021 - Ignorert fordi vi ikke journalfører
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
-        val søknad = SøknadUtils.gyldigSøknad().copy(id = "01ARZ3NDEKTSV4RRFFQ69G5FAA")
+        val søknad = SøknadUtils.gyldigSøknad()
 
         wireMockServer.stubJournalfor(500) // Simulerer feil ved journalføring
 
@@ -132,9 +134,9 @@ class AleneomsorgProsesseringTest {
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
-        k9RapidConsumer
-            .hentK9RapidMelding(søknad.id)
-            .assertGyldigK9RapidFormat(søknad.id)
+        cleanupKonsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     @Test
@@ -142,9 +144,9 @@ class AleneomsorgProsesseringTest {
         val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
-        k9RapidConsumer
-            .hentK9RapidMelding(søknad.id)
-            .assertGyldigK9RapidFormat(søknad.id)
+        cleanupKonsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
     }
 
     private fun ventPaaAtRetryMekanismeIStreamProsessering() = runBlocking { delay(Duration.ofSeconds(30)) }
@@ -162,13 +164,21 @@ class AleneomsorgProsesseringTest {
 
 }
 
-internal fun String.assertGyldigK9RapidFormat(id: String) {
+internal fun String.assertGyldigMelding(søknadId: String) {
     val rawJson = JSONObject(this)
+    val metadata = assertNotNull(rawJson.getJSONObject("metadata"))
+    assertNotNull(metadata.getString("correlationId"))
 
-    assertEquals(rawJson.getJSONArray("@behovsrekkefølge").getString(0), "AleneOmOmsorgen")
-    assertEquals(rawJson.getString("@type"),"Behovssekvens")
-    assertEquals(rawJson.getString("@id"), id)
+    val data = assertNotNull(rawJson.getJSONObject("data"))
+    assertNotNull(data.getJSONObject("journalførtMelding").getString("journalpostId"))
 
-    assertNotNull(rawJson.getString("@correlationId"))
-    assertNotNull(rawJson.getJSONObject("@behov"))
+    val søknad = assertNotNull(data.getJSONObject("melding")).getJSONObject("k9Søknad")
+    assertEquals(søknadId, søknad.getString("søknadId"))
+
+    val type = søknad.getJSONObject("ytelse").getString("type")
+    assertEquals(type, "OMP_UTV_AO")
+
+    val rekonstruertSøknad = JsonUtils.fromString(søknad.toString(), Søknad::class.java)
+    val rekonstruertSøknadSomString = JsonUtils.toString(rekonstruertSøknad)
+    JSONAssert.assertEquals(søknad.toString(), rekonstruertSøknadSomString, true)
 }

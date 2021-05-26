@@ -47,11 +47,6 @@ internal object Topics {
         name = "dusseldorf.privat-omsorgsdager-aleneomsorg-cleanup",
         serDes = SerDes()
     )
-
-    val K9_RAPID_V2 = Topic(
-        name = "omsorgspenger.k9-rapid-v2",
-        serDes = SerDes()
-    )
 }
 
 internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = aleneomsorgKonfigurertMapper().readValue(data.rawJson)
@@ -62,11 +57,8 @@ internal fun Any.serialiserTilData() = Data(aleneomsorgKonfigurertMapper().write
 class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {}
     override fun close() {}
-    override fun serialize(topic: String, entry: TopicEntry): ByteArray = when (topic == Topics.K9_RAPID_V2.name) {
-        true -> entry.data.rawJson.toByteArray()
-        false -> entry.rawJson.toByteArray()
-    }
     override fun deserialize(topic: String, entry: ByteArray): TopicEntry = TopicEntry(String(entry))
+    override fun serialize(topic: String, entry: TopicEntry): ByteArray = entry.rawJson.toByteArray()
 }
 
 data class TopicEntry(val rawJson: String) {

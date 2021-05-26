@@ -49,7 +49,7 @@ internal class PreprosesseringV1Service(
         logger.trace("Mellomlagrer Oppsummerings-JSON")
 
         val søknadJsonUrl = dokumentService.lagreSoknadsMelding(
-            melding = melding,
+            melding = melding.k9Format,
             dokumentEier = dokumentEier,
             correlationId = correlationId
         )

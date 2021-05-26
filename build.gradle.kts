@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val dusseldorfKtorVersion = "1.5.3.facbbe4"
 val ktorVersion = ext.get("ktorVersion").toString()
-val k9RapidVersion = "1.0bd8bfe"
+val k9FormatVersion = "5.1.50"
 
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
@@ -34,8 +34,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
 
-    //K9-Rapid
-    implementation("no.nav.k9.rapid:alene-om-omsorgen:$k9RapidVersion")
+    //K9-format
+    implementation("no.nav.k9:soknad:$k9FormatVersion")
+    implementation ( "org.glassfish:jakarta.el:3.0.3")
 
     // Client
     implementation("no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")

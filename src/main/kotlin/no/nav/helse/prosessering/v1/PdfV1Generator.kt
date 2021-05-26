@@ -88,7 +88,6 @@ internal class PdfV1Generator {
                             "navn" to melding.søker.formatertNavn().capitalizeName(),
                             "fødselsnummer" to melding.søker.fødselsnummer
                         ),
-                        "id" to melding.id,
                         "barn" to melding.barn.somMapTilPdf(),
                         "samtykke" to mapOf(
                             "harForståttRettigheterOgPlikter" to melding.harForståttRettigheterOgPlikter,

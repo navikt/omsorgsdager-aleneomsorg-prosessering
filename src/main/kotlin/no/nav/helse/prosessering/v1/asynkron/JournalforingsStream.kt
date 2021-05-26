@@ -7,6 +7,7 @@ import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
+import no.nav.k9.søknad.JsonUtils
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
@@ -46,6 +47,7 @@ internal class JournalforingsStream(
                         val dokumenter = preprosessertMelding.dokumentUrls
 
                         logger.info("Journalfører dokumenter: {}", dokumenter)
+                        logger.info("K9Format: ${JsonUtils.toString(preprosessertMelding.k9Søknad)}")
                         logger.info("HOPPER OVER JOURNALFØRING. $preprosessertMelding") //TODO 30.04.2021 - Fjerne kommentar her og nedenfor
 /*                        val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,

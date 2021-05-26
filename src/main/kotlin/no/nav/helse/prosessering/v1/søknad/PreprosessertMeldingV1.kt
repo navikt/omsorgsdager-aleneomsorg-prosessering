@@ -2,8 +2,7 @@ package no.nav.helse.prosessering.v1.søknad
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.felles.AktørId
-import no.nav.k9.rapid.behov.AleneOmOmsorgenBehov
-import no.nav.k9.rapid.behov.Behovssekvens
+import no.nav.k9.søknad.Søknad
 import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -14,8 +13,8 @@ data class PreprosessertMeldingV1(
     val språk: String?,
     val dokumentUrls: List<List<URI>>,
     val søker: PreprosessertSøker,
-    val id: String,
     val barn: List<Barn>,
+    val k9Søknad: Søknad,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
 ) {
@@ -29,25 +28,11 @@ data class PreprosessertMeldingV1(
         mottatt = melding.mottatt,
         dokumentUrls = dokumentUrls,
         søker = PreprosessertSøker(melding.søker, søkerAktørId),
-        id = melding.id,
         barn = melding.barn,
+        k9Søknad = melding.k9Søknad,
         harForståttRettigheterOgPlikter = melding.harForståttRettigheterOgPlikter,
         harBekreftetOpplysninger = melding.harBekreftetOpplysninger
     )
-
-    fun tilBehovssekvens(correlationId: String) : Behovssekvens {
-        val behov = AleneOmOmsorgenBehov(
-            identitetsnummer = søker.fødselsnummer,
-            mottaksdato = mottatt.toLocalDate(),
-            barn = barn.map { AleneOmOmsorgenBehov.Barn(it.identitetsnummer!!)}
-        )
-
-        return Behovssekvens(
-            id = id,
-            correlationId = correlationId,
-            behov = arrayOf(behov)
-        )
-    }
 }
 
 data class PreprosessertSøker(

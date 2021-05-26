@@ -7,7 +7,6 @@ import no.nav.helse.felles.Metadata
 import no.nav.helse.prosessering.v1.asynkron.Data
 import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import no.nav.helse.prosessering.v1.asynkron.Topics.CLEANUP
-import no.nav.helse.prosessering.v1.asynkron.Topics.K9_RAPID_V2
 import no.nav.helse.prosessering.v1.asynkron.Topics.MOTTATT
 import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSESSERT
 import no.nav.helse.prosessering.v1.asynkron.aleneomsorgKonfigurertMapper
@@ -36,8 +35,7 @@ object KafkaWrapper {
             topicNames = listOf(
                 MOTTATT.name,
                 PREPROSESSERT.name,
-                CLEANUP.name,
-                K9_RAPID_V2.name
+                CLEANUP.name
             )
         )
         return kafkaEnvironment
@@ -71,13 +69,13 @@ private fun KafkaEnvironment.testProducerProperties(clientId: String): MutableMa
 }
 
 
-fun KafkaEnvironment.k9RapidV2Consumer(): KafkaConsumer<String, String> {
+fun KafkaEnvironment.cleanupKonsumer(): KafkaConsumer<String, String> {
     val consumer = KafkaConsumer(
-        testConsumerProperties("K9-Rapid-V2-Konsumer"),
+        testConsumerProperties("CleanupConsumer"),
         StringDeserializer(),
         StringDeserializer()
     )
-    consumer.subscribe(listOf(K9_RAPID_V2.name))
+    consumer.subscribe(listOf(CLEANUP.name))
     return consumer
 }
 
@@ -87,7 +85,7 @@ fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
     MOTTATT.serDes
 )
 
-fun KafkaConsumer<String, String>.hentK9RapidMelding(
+fun KafkaConsumer<String, String>.hentCleanupMelding(
     id: String,
     maxWaitInSeconds: Long = 20
 ): String {
@@ -95,7 +93,7 @@ fun KafkaConsumer<String, String>.hentK9RapidMelding(
     while (System.currentTimeMillis() < end) {
         seekToBeginning(assignment())
         val entries = poll(Duration.ofSeconds(1))
-            .records(K9_RAPID_V2.name)
+            .records(CLEANUP.name)
             .filter { it.key() == id }
 
         if (entries.isNotEmpty()) {
@@ -103,7 +101,7 @@ fun KafkaConsumer<String, String>.hentK9RapidMelding(
             return entries.first().value()
         }
     }
-    throw IllegalStateException("Fant ikke melding på k9-rapid-v2 med ID:$id etter $maxWaitInSeconds sekunder.")
+    throw IllegalStateException("Fant ikke melding på ${CLEANUP.name} med ID:$id etter $maxWaitInSeconds sekunder.")
 }
 
 fun KafkaProducer<String, TopicEntry>.leggTilMottak(soknad: MeldingV1) {
