@@ -45,8 +45,6 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  envFrom:
-    - secret: omsorgsdager-aleneomsorg-prosessering
   env:
   {{#each env}}
      - name: {{@key}}
