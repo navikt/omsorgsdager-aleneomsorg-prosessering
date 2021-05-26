@@ -17,8 +17,8 @@ spec:
       rules:
         - application: k9-mellomlagring
       external:
-        - host: api-gw-q1.oera.no
         - host: oauth2.googleapis.com
+        - host: {{env.K9_JOARK_EXTERNAL}}
   kafka:
     pool: {{kafka-pool}}
   liveness:

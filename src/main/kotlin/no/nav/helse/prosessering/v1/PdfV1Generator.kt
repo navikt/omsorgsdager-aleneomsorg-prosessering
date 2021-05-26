@@ -18,7 +18,6 @@ import java.time.DayOfWeek
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 
 internal class PdfV1Generator {
@@ -144,7 +143,7 @@ internal class PdfV1Generator {
 
 private fun Søker.formatertNavn() = if (mellomnavn != null) "$fornavn $mellomnavn $etternavn" else "$fornavn $etternavn"
 
-private fun String.språkTilTekst() = when (this.toLowerCase()) {
+private fun String.språkTilTekst() = when (this.lowercase(Locale.getDefault())) {
     "nb" -> "bokmål"
     "nn" -> "nynorsk"
     else -> this

@@ -1,14 +1,23 @@
 package no.nav.helse.prosessering.v1.søknad
 
+import java.time.LocalDate
+import java.util.*
+
 data class Barn (
     val navn: String,
     val aktørId: String?,
     var identitetsnummer: String?,
-    val aleneomsorg: Boolean
+    val tidspunktForAleneomsorg: TidspunktForAleneomsorg,
+    val dato: LocalDate? = null
 ) {
     override fun toString(): String {
         return "Barn(navn='$navn', aktørId=*****, identitetsnummer=*****)"
     }
+}
+
+enum class TidspunktForAleneomsorg {
+    SISTE_2_ÅRENE,
+    TIDLIGERE
 }
 
 internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
@@ -16,9 +25,10 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
         mapOf<String, Any?>(
             "navn" to it.navn.capitalizeName(),
             "identitetsnummer" to it.identitetsnummer,
-            "aleneomsorg" to it.aleneomsorg
+            "tidspunktForAleneomsorg" to it.tidspunktForAleneomsorg,
+            "dato" to it.dato
         )
     }
 }
 
-fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
+fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase(Locale.getDefault()).capitalize() }

@@ -39,7 +39,7 @@ data class PreprosessertMeldingV1(
         val behov = AleneOmOmsorgenBehov(
             identitetsnummer = søker.fødselsnummer,
             mottaksdato = mottatt.toLocalDate(),
-            barn = barn.mapNotNull { if(it.aleneomsorg) AleneOmOmsorgenBehov.Barn(it.identitetsnummer!!) else null }
+            barn = barn.map { AleneOmOmsorgenBehov.Barn(it.identitetsnummer!!)}
         )
 
         return Behovssekvens(

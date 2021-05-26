@@ -35,6 +35,9 @@ class BehovssekvensTest {
                         },
                         {
                           "identitetsnummer": "26106923468"
+                        },
+                        {
+                          "identitetsnummer": "07097427806"
                         }
                       ],
                       "mottaksdato": "2021-01-01",
