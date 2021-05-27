@@ -15,9 +15,9 @@ data class Barn (
     }
 }
 
-enum class TidspunktForAleneomsorg {
-    SISTE_2_ÅRENE,
-    TIDLIGERE
+enum class TidspunktForAleneomsorg(val pdfUtskrift: String) {
+    SISTE_2_ÅRENE("De siste to årene."),
+    TIDLIGERE("Tidligere enn de siste to årene.")
 }
 
 internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
@@ -25,7 +25,7 @@ internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
         mapOf<String, Any?>(
             "navn" to it.navn.capitalizeName(),
             "identitetsnummer" to it.identitetsnummer,
-            "tidspunktForAleneomsorg" to it.tidspunktForAleneomsorg,
+            "tidspunktForAleneomsorg" to it.tidspunktForAleneomsorg.pdfUtskrift,
             "dato" to it.dato
         )
     }
