@@ -16,7 +16,6 @@ import no.nav.k9.søknad.JsonUtils
 import no.nav.k9.søknad.Søknad
 import org.json.JSONObject
 import org.junit.AfterClass
-import org.junit.Ignore
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -122,7 +121,6 @@ class AleneomsorgProsesseringTest {
     }
 
     @Test
-    @Ignore //TODO 05.05.2021 - Ignorert fordi vi ikke journalfører
     fun `En feilprosessert søknad vil bli prosessert etter at tjenesten restartes`() {
         val søknad = SøknadUtils.gyldigSøknad()
 
