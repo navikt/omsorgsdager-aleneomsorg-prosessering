@@ -33,14 +33,12 @@ object SøknadUtils {
             mellomnavn = "Mellomnavn",
             fornavn = "Ola"
         ),
-        barn = listOf(
-            Barn(
-                navn = "Ole Dole",
-                identitetsnummer = "29076523302",
-                aktørId = null,
-                tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
-                dato = LocalDate.now().minusMonths(4)
-            )
+        barn = Barn(
+            navn = "Ole Dole",
+            identitetsnummer = "29076523302",
+            aktørId = null,
+            tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
+            dato = LocalDate.now().minusMonths(4)
         ),
         k9Søknad = Søknad(
             SøknadId(søknadId),

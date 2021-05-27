@@ -32,16 +32,14 @@
     </div>
 
     <section id="dineBarn">
-        <h2>Dine barn</h2>
+        <h2>Barn det skal registreres aleneomsorg for</h2>
         <ul>
-            {{# each barn as |barn|~}}
-                <li>
-                    <p><b>Navn: </b>{{barn.navn}}</p>
-                    <p><b>Identitetsnummer: </b>{{barn.identitetsnummer}}</p>
-                    <p><b>Tidspunkt for aleneomsorg: </b>{{barn.tidspunktForAleneomsorg}}</p>
-                    <p><b>Dato: </b>{{barn.dato}}</p>
-                </li>
-            {{/each}}
+            <li>
+                <p><b>Navn: </b>{{barn.navn}}</p>
+                <p><b>Identitetsnummer: </b>{{barn.identitetsnummer}}</p>
+                <p><b>Tidspunkt for aleneomsorg: </b>{{barn.tidspunktForAleneomsorg}}</p>
+                <p><b>Dato: </b>{{barn.dato}}</p>
+            </li>
         </ul>
     </section>
 

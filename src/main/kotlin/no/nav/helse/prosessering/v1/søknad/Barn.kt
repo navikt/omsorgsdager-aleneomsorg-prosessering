@@ -20,15 +20,13 @@ enum class TidspunktForAleneomsorg(val pdfUtskrift: String) {
     TIDLIGERE("Tidligere enn de siste to årene.")
 }
 
-internal fun List<Barn>.somMapTilPdf(): List<Map<String, Any?>> {
-    return map {
-        mapOf<String, Any?>(
-            "navn" to it.navn.capitalizeName(),
-            "identitetsnummer" to it.identitetsnummer,
-            "tidspunktForAleneomsorg" to it.tidspunktForAleneomsorg.pdfUtskrift,
-            "dato" to it.dato
-        )
-    }
+internal fun Barn.somMapTilPdf(): Map<String, Any?> {
+    return mapOf<String, Any?>(
+        "navn" to navn.capitalizeName(),
+        "identitetsnummer" to identitetsnummer,
+        "tidspunktForAleneomsorg" to tidspunktForAleneomsorg.pdfUtskrift,
+        "dato" to dato
+    )
 }
 
 fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase(Locale.getDefault()).capitalize() }

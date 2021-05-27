@@ -8,7 +8,7 @@ data class MeldingV1(
     val mottatt: ZonedDateTime,
     val språk: String? = "nb",
     val søker: Søker,
-    val barn: List<Barn>,
+    val barn: Barn,
     val k9Søknad: Søknad,
     val harForståttRettigheterOgPlikter: Boolean,
     val harBekreftetOpplysninger: Boolean
