@@ -1,6 +1,8 @@
 package no.nav.helse.prosessering.v1.asynkron
 
+import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
+import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
@@ -40,17 +42,13 @@ internal class CleanupStream(
                         val cleanupMelding = entry.deserialiserTilCleanup()
 
                         logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "kjører cleanup"))
-                        logger.trace("Sletter dokumenter.")
-                        logger.info("HOPPER OVER SLETTING")  //TODO 30.04.2021 - Fjerne kommentar her og nedenfor
-/*
 
                         dokumentService.slettDokumeter(
                             urlBolks = cleanupMelding.melding.dokumentUrls,
                             dokumentEier = DokumentGateway.DokumentEier(cleanupMelding.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
-*/
-                        logger.trace("Dokumenter slettet.")
+
                         Data("{}")
                     }
                 }

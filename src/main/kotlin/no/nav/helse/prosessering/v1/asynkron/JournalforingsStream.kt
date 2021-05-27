@@ -1,13 +1,13 @@
 package no.nav.helse.prosessering.v1.asynkron
 
+import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.joark.JoarkGateway
-import no.nav.helse.joark.JournalPostId
+import no.nav.helse.joark.Navn
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
 import no.nav.helse.kafka.ManagedStreamReady
-import no.nav.k9.søknad.JsonUtils
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
@@ -47,9 +47,7 @@ internal class JournalforingsStream(
                         val dokumenter = preprosessertMelding.dokumentUrls
 
                         logger.info("Journalfører dokumenter: {}", dokumenter)
-                        logger.info("K9Format: ${JsonUtils.toString(preprosessertMelding.k9Søknad)}")
-                        logger.info("HOPPER OVER JOURNALFØRING. $preprosessertMelding") //TODO 30.04.2021 - Fjerne kommentar her og nedenfor
-/*                        val journalPostId = joarkGateway.journalfør(
+                        val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,
                             norskIdent = preprosessertMelding.søker.fødselsnummer,
                             correlationId = CorrelationId(entry.metadata.correlationId),
@@ -59,8 +57,7 @@ internal class JournalforingsStream(
                                 mellomnavn = preprosessertMelding.søker.mellomnavn,
                                 etternavn = preprosessertMelding.søker.etternavn
                             )
-                        )*/
-                        val journalPostId = JournalPostId("123456789")
+                        )
                         logger.info("Dokumenter journalført med ID = ${journalPostId.journalpostId}.")
                         val journalfort = Journalfort(journalpostId = journalPostId.journalpostId)
 
