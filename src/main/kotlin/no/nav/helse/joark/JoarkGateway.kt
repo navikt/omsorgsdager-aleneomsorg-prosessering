@@ -94,7 +94,7 @@ class JoarkGateway(
             { error ->
                 logger.error("Error response = '${error.response.body().asString("text/plain")}' fra '${request.url}'")
                 logger.error(error.toString())
-                throw HttpError(response.statusCode, "Feil ved jorunalføring.")
+                throw HttpError(response.statusCode, "Feil ved journalføring.")
             }
         )
     }

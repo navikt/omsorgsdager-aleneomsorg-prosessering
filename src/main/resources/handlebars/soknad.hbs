@@ -38,7 +38,9 @@
                 <p><b>Navn: </b>{{barn.navn}}</p>
                 <p><b>Identitetsnummer: </b>{{barn.identitetsnummer}}</p>
                 <p><b>Tidspunkt for aleneomsorg: </b>{{barn.tidspunktForAleneomsorg}}</p>
-                <p><b>Dato: </b>{{barn.dato}}</p>
+                {{#if barn.dato}}
+                    <p><b>Dato: </b>{{barn.dato}}</p>
+                {{/if}}
             </li>
         </ul>
     </section>
