@@ -41,3 +41,6 @@ spec:
     - team: dusseldorf
       application: omsorgsdager-aleneomsorg-prosessering
       access: readwrite
+    - team: dusseldorf
+      application: sif-innsyn-api
+      access: read
