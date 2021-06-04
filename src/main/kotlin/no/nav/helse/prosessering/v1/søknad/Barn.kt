@@ -17,7 +17,7 @@ data class Barn (
 
 enum class TidspunktForAleneomsorg(val pdfUtskrift: String) {
     SISTE_2_ÅRENE("De siste to årene."),
-    TIDLIGERE("Tidligere enn de siste to årene.")
+    TIDLIGERE("Tidligere enn de to siste årene.")
 }
 
 internal fun Barn.somMapTilPdf(): Map<String, Any?> {

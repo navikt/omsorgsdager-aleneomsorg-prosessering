@@ -10,7 +10,7 @@
           content="{{tittel}} {{søknadMottattDag}} {{ søknadMottatt }}"/>
     <bookmarks>
         <bookmark name="Søker" href="#søker"/>
-        <bookmark name="Dine barn" href="#dineBarn"/>
+        <bookmark name="Barn" href="#barn"/>
         <bookmark name="Samtykke" href="#samtykke"/>
     </bookmarks>
     {{#block 'style-common' }}
@@ -31,12 +31,12 @@
         <br/>
     </div>
 
-    <section id="dineBarn">
-        <h2>Barn det skal registreres aleneomsorg for</h2>
+    <section id="barn">
+        <h2>Barn du skal registrere aleneomsorg for</h2>
         <ul>
             <li>
                 <p><b>Navn: </b>{{barn.navn}}</p>
-                <p><b>Identitetsnummer: </b>{{barn.identitetsnummer}}</p>
+                <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
                 <p><b>Tidspunkt for aleneomsorg: </b>{{barn.tidspunktForAleneomsorg}}</p>
                 {{#if barn.dato}}
                     <p><b>Dato: </b>{{barn.dato}}</p>
@@ -51,7 +51,7 @@
         <p class="sporsmalstekst">Har du forstått dine rettigheter og plikter?</p>
         <p>{{ jaNeiSvar samtykke.harForståttRettigheterOgPlikter }}</p>
         <hr/>
-        <p class="sporsmalstekst">Har du bekreftet at opplysninger du har gitt er riktige?</p>
+        <p class="sporsmalstekst">Har du bekreftet at opplysningene du har gitt er riktige?</p>
         <p>{{ jaNeiSvar samtykke.harBekreftetOpplysninger }}</p>
     </section>
 
