@@ -1,6 +1,8 @@
 package no.nav.helse.prosessering.v1.søknad
 
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 data class Barn (
@@ -16,17 +18,19 @@ data class Barn (
 }
 
 enum class TidspunktForAleneomsorg(val pdfUtskrift: String) {
-    SISTE_2_ÅRENE("De siste to årene."),
-    TIDLIGERE("Tidligere enn de to siste årene.")
+    SISTE_2_ÅRENE(""),
+    TIDLIGERE("Du ble alene om omsorgen for over 2 år siden.")
 }
 
 internal fun Barn.somMapTilPdf(): Map<String, Any?> {
     return mapOf<String, Any?>(
         "navn" to navn.capitalizeName(),
         "identitetsnummer" to identitetsnummer,
-        "tidspunktForAleneomsorg" to tidspunktForAleneomsorg.pdfUtskrift,
-        "dato" to dato
+        "tidspunktForAleneomsorgUtskrift" to tidspunktForAleneomsorg.pdfUtskrift,
+        "dato" to if(dato!= null) DATE_TIME_FORMATTER.format(dato) else null
     )
 }
 
+private val ZONE_ID = ZoneId.of("Europe/Oslo")
+private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy").withZone(ZONE_ID)
 fun String.capitalizeName(): String = split(" ").joinToString(" ") { it.lowercase(Locale.getDefault()).capitalize() }

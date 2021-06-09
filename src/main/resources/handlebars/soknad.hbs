@@ -37,10 +37,13 @@
             <li>
                 <p><b>Navn: </b>{{barn.navn}}</p>
                 <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
-                <p><b>Tidspunkt for aleneomsorg: </b>{{barn.tidspunktForAleneomsorg}}</p>
-                {{#if barn.dato}}
-                    <p><b>Dato: </b>{{barn.dato}}</p>
-                {{/if}}
+                <p><b>Tidspunkt for aleneomsorg: </b>
+                    {{#if barn.dato}}
+                        {{barn.dato}}
+                    {{else}}
+                        {{barn.tidspunktForAleneomsorgUtskrift}}
+                    {{/if}}
+                </p>
             </li>
         </ul>
     </section>
