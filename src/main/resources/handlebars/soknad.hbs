@@ -33,19 +33,15 @@
 
     <section id="barn">
         <h2>Barn du skal registrere aleneomsorg for</h2>
-        <ul>
-            <li>
-                <p><b>Navn: </b>{{barn.navn}}</p>
-                <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
-                <p><b>Tidspunkt for aleneomsorg: </b>
-                    {{#if barn.dato}}
-                        {{barn.dato}}
-                    {{else}}
-                        {{barn.tidspunktForAleneomsorgUtskrift}}
-                    {{/if}}
-                </p>
-            </li>
-        </ul>
+        <p><b>Navn: </b>{{barn.navn}}</p>
+        <p><b>Fødselsnummer: </b>{{barn.identitetsnummer}}</p>
+        <p>
+            {{#if barn.dato}}
+                <b>Tidspunkt for aleneomsorg: </b> {{barn.dato}}
+            {{else}}
+                <b>{{barn.tidspunktForAleneomsorgUtskrift}}</b>
+            {{/if}}
+        </p>
     </section>
 
     <!-- SAMTYKKE -->
