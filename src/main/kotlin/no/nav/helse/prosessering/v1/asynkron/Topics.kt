@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.helse.dusseldorf.ktor.jackson.dusseldorfConfigured
 import no.nav.helse.felles.Metadata
+import no.nav.helse.prosessering.v1.asynkron.Topics.K9_DITTNAV_VARSEL
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.PreprosessertMeldingV1
 import org.apache.kafka.common.serialization.Deserializer
@@ -74,7 +75,12 @@ class SerDes : Serializer<TopicEntry>, Deserializer<TopicEntry> {
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {}
     override fun close() {}
     override fun deserialize(topic: String, entry: ByteArray): TopicEntry = TopicEntry(String(entry))
-    override fun serialize(topic: String, entry: TopicEntry): ByteArray = entry.rawJson.toByteArray()
+    override fun serialize(topic: String, entry: TopicEntry): ByteArray{
+        return when(topic){
+            K9_DITTNAV_VARSEL.name -> entry.data.rawJson.toByteArray()
+            else -> entry.rawJson.toByteArray()
+        }
+    }
 }
 
 data class TopicEntry(val rawJson: String) {
