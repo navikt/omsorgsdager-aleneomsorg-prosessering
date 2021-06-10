@@ -11,6 +11,7 @@ import no.nav.helse.kafka.ManagedStreamReady
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
+import java.util.*
 
 internal class CleanupStream(
     kafkaConfig: KafkaConfig,
@@ -33,6 +34,7 @@ internal class CleanupStream(
         private fun topology(dokumentService: DokumentService): Topology {
             val builder = StreamsBuilder()
             val fraCleanup = Topics.CLEANUP
+            val tilK9DittnavVarsel = Topics.K9_DITTNAV_VARSEL
 
             builder
                 .stream(fraCleanup.name, fraCleanup.consumed)
@@ -49,9 +51,23 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
-                        Data("{}")
+                        val data = K9DittnavVarsel(
+                            metadata = cleanupMelding.metadata,
+                            k9Beskjed = K9Beskjed(
+                                metadata = cleanupMelding.metadata,
+                                søkerFødselsnummer = cleanupMelding.melding.søker.fødselsnummer,
+                                grupperingsId = cleanupMelding.melding.søknadId,
+                                tekst = "Test tekst fra prosessering",
+                                link = null,
+                                dagerSynlig = 7,
+                                eventId = UUID.randomUUID().toString()
+                            )
+                        ).serialiserTilData()
+                        logger.info("Sender beskjed videre til K9-dittnav-varsel. Data = ${data.rawJson}")
+                        data
                     }
                 }
+                .to(tilK9DittnavVarsel.name, tilK9DittnavVarsel.produced)
             return builder.build()
         }
     }

@@ -7,6 +7,7 @@ import no.nav.helse.felles.Metadata
 import no.nav.helse.prosessering.v1.asynkron.Data
 import no.nav.helse.prosessering.v1.asynkron.TopicEntry
 import no.nav.helse.prosessering.v1.asynkron.Topics.CLEANUP
+import no.nav.helse.prosessering.v1.asynkron.Topics.K9_DITTNAV_VARSEL
 import no.nav.helse.prosessering.v1.asynkron.Topics.MOTTATT
 import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSESSERT
 import no.nav.helse.prosessering.v1.asynkron.aleneomsorgKonfigurertMapper
@@ -35,7 +36,8 @@ object KafkaWrapper {
             topicNames = listOf(
                 MOTTATT.name,
                 PREPROSESSERT.name,
-                CLEANUP.name
+                CLEANUP.name,
+                K9_DITTNAV_VARSEL.name
             )
         )
         return kafkaEnvironment

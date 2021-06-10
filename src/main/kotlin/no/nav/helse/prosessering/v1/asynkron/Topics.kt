@@ -20,6 +20,17 @@ import org.json.JSONObject
 data class Data(val rawJson: String)
 data class Cleanup(val metadata: Metadata, val melding: PreprosessertMeldingV1, val journalførtMelding: Journalfort)
 data class Journalfort(val journalpostId: String)
+data class K9DittnavVarsel(val metadata: Metadata, val k9Beskjed: K9Beskjed)
+
+data class K9Beskjed(
+    val metadata: Metadata,
+    val grupperingsId: String,
+    val tekst: String,
+    val link: String?,
+    val dagerSynlig: Long,
+    val søkerFødselsnummer: String,
+    val eventId: String
+)
 
 internal data class Topic(
     val name: String,
@@ -47,6 +58,12 @@ internal object Topics {
         name = "dusseldorf.privat-omsorgsdager-aleneomsorg-cleanup",
         serDes = SerDes()
     )
+
+    val K9_DITTNAV_VARSEL = Topic(
+        name = "dusseldorf.privat-k9-dittnav-varsel-beskjed",
+        serDes = SerDes()
+    )
+
 }
 
 internal fun TopicEntry.deserialiserTilCleanup(): Cleanup  = aleneomsorgKonfigurertMapper().readValue(data.rawJson)
