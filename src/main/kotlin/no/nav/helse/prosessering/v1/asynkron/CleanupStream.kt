@@ -51,20 +51,17 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
-                        val data = K9DittnavVarsel(
+                        val k9beskjed = K9Beskjed(
                             metadata = cleanupMelding.metadata,
-                            k9Beskjed = K9Beskjed(
-                                metadata = cleanupMelding.metadata,
-                                søkerFødselsnummer = cleanupMelding.melding.søker.fødselsnummer,
-                                grupperingsId = cleanupMelding.melding.søknadId,
-                                tekst = "Test tekst fra prosessering",
-                                link = null,
-                                dagerSynlig = 7,
-                                eventId = UUID.randomUUID().toString()
-                            )
+                            søkerFødselsnummer = cleanupMelding.melding.søker.fødselsnummer,
+                            grupperingsId = cleanupMelding.melding.søknadId,
+                            tekst = "Test tekst fra prosessering",
+                            link = null,
+                            dagerSynlig = 7,
+                            eventId = UUID.randomUUID().toString()
                         ).serialiserTilData()
-                        logger.info("Sender beskjed videre til K9-dittnav-varsel. Data = ${data.rawJson}")
-                        data
+                        logger.info("Sender beskjed videre til K9-dittnav-varsel. Data = ${k9beskjed.rawJson}")
+                        k9beskjed
                     }
                 }
                 .to(tilK9DittnavVarsel.name, tilK9DittnavVarsel.produced)

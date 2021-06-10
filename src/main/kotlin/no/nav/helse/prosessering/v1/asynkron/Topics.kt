@@ -20,7 +20,6 @@ import org.json.JSONObject
 data class Data(val rawJson: String)
 data class Cleanup(val metadata: Metadata, val melding: PreprosessertMeldingV1, val journalførtMelding: Journalfort)
 data class Journalfort(val journalpostId: String)
-data class K9DittnavVarsel(val metadata: Metadata, val k9Beskjed: K9Beskjed)
 
 data class K9Beskjed(
     val metadata: Metadata,
