@@ -10,10 +10,12 @@ data class K9Beskjed(
     val link: String?,
     val dagerSynlig: Long,
     val søkerFødselsnummer: String,
-    val eventId: String
+    val eventId: String,
+    val ytelse: String
 )
 const val DAGER_SYNLIG : Long= 7
 const val TEKST = "Vi har mottatt din melding om registrering av aleneomsorg."
+const val YTELSE = "OMSORGSDAGER_ALENEOMSORG"
 
 fun Cleanup.tilK9Beskjed() = K9Beskjed(
     metadata = this.metadata,
@@ -22,5 +24,6 @@ fun Cleanup.tilK9Beskjed() = K9Beskjed(
     søkerFødselsnummer = this.melding.søker.fødselsnummer,
     dagerSynlig = DAGER_SYNLIG,
     link = null,
-    eventId = UUID.randomUUID().toString()
+    eventId = UUID.randomUUID().toString(),
+    ytelse = YTELSE
 )
