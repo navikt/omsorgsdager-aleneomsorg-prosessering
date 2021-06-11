@@ -13,7 +13,7 @@ data class K9Beskjed(
     val eventId: String
 )
 const val DAGER_SYNLIG : Long= 7
-const val TEKST = "Vi har mottatt melding om aleneomsorg."
+const val TEKST = "Vi har mottatt din melding om registrering av aleneomsorg."
 
 fun Cleanup.tilK9Beskjed() = K9Beskjed(
     metadata = this.metadata,
