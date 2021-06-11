@@ -51,9 +51,9 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
-                        val k9beskjed = cleanupMelding.tilK9Beskjed().serialiserTilData()
-                        logger.info("Sender beskjed videre til K9-dittnav-varsel. Data = ${k9beskjed.rawJson}")
-                        k9beskjed
+                        val k9beskjed = cleanupMelding.tilK9Beskjed()
+                        logger.info("Sender beskjed til K9-dittnav-varsel med eventId ${k9beskjed.eventId}")
+                        k9beskjed.serialiserTilData()
                     }
                 }
                 .to(tilK9DittnavVarsel.name, tilK9DittnavVarsel.produced)
