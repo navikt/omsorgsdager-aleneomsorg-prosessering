@@ -4,6 +4,7 @@ import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
+import no.nav.helse.felles.tilK9Beskjed
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
@@ -11,7 +12,6 @@ import no.nav.helse.kafka.ManagedStreamReady
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.slf4j.LoggerFactory
-import java.util.*
 
 internal class CleanupStream(
     kafkaConfig: KafkaConfig,
@@ -51,15 +51,7 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
-                        val k9beskjed = K9Beskjed(
-                            metadata = cleanupMelding.metadata,
-                            søkerFødselsnummer = cleanupMelding.melding.søker.fødselsnummer,
-                            grupperingsId = cleanupMelding.melding.søknadId,
-                            tekst = "Test tekst fra prosessering",
-                            link = null,
-                            dagerSynlig = 7,
-                            eventId = UUID.randomUUID().toString()
-                        ).serialiserTilData()
+                        val k9beskjed = cleanupMelding.tilK9Beskjed().serialiserTilData()
                         logger.info("Sender beskjed videre til K9-dittnav-varsel. Data = ${k9beskjed.rawJson}")
                         k9beskjed
                     }

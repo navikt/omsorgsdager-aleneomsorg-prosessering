@@ -22,16 +22,6 @@ data class Data(val rawJson: String)
 data class Cleanup(val metadata: Metadata, val melding: PreprosessertMeldingV1, val journalførtMelding: Journalfort)
 data class Journalfort(val journalpostId: String)
 
-data class K9Beskjed(
-    val metadata: Metadata,
-    val grupperingsId: String,
-    val tekst: String,
-    val link: String?,
-    val dagerSynlig: Long,
-    val søkerFødselsnummer: String,
-    val eventId: String
-)
-
 internal data class Topic(
     val name: String,
     val serDes: SerDes
