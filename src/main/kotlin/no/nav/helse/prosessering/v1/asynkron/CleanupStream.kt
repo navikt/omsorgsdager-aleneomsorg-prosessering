@@ -4,6 +4,7 @@ import no.nav.helse.dokument.DokumentGateway
 import no.nav.helse.dokument.DokumentService
 import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
+import no.nav.helse.felles.tilK9Beskjed
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
@@ -33,6 +34,7 @@ internal class CleanupStream(
         private fun topology(dokumentService: DokumentService): Topology {
             val builder = StreamsBuilder()
             val fraCleanup = Topics.CLEANUP
+            val tilK9DittnavVarsel = Topics.K9_DITTNAV_VARSEL
 
             builder
                 .stream(fraCleanup.name, fraCleanup.consumed)
@@ -49,9 +51,12 @@ internal class CleanupStream(
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 
-                        Data("{}")
+                        val k9beskjed = cleanupMelding.tilK9Beskjed()
+                        logger.info("Sender beskjed til K9-dittnav-varsel med eventId ${k9beskjed.eventId}")
+                        k9beskjed.serialiserTilData()
                     }
                 }
+                .to(tilK9DittnavVarsel.name, tilK9DittnavVarsel.produced)
             return builder.build()
         }
     }
