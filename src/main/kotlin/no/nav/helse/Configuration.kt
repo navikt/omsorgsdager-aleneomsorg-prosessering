@@ -1,7 +1,6 @@
 package no.nav.helse
 
 import io.ktor.config.*
-import io.ktor.util.*
 import no.nav.helse.dusseldorf.ktor.core.getOptionalString
 import no.nav.helse.dusseldorf.ktor.core.getRequiredList
 import no.nav.helse.dusseldorf.ktor.core.getRequiredString
@@ -11,7 +10,6 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-@KtorExperimentalAPI
 data class Configuration(private val config : ApplicationConfig) {
 
     fun getk9JoarkBaseUrl() = URI(config.getRequiredString("nav.gateways.k9_joark_url", secret = false))
