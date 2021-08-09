@@ -8,7 +8,6 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.util.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.helse.auth.AccessTokenClientResolver
 import no.nav.helse.dokument.DokumentGateway
@@ -35,7 +34,6 @@ private val logger: Logger = LoggerFactory.getLogger("nav.AleneomsorgProsesserin
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@KtorExperimentalAPI
 fun Application.aleneomsorgProsessering() {
     logProxyProperties()
     DefaultExports.initialize()
