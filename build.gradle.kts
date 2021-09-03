@@ -40,7 +40,7 @@ dependencies {
 
     //K9-format
     implementation("no.nav.k9:soknad:$k9FormatVersion")
-    implementation ( "org.glassfish:jakarta.el:3.0.3")
+    implementation ( "org.glassfish:jakarta.el:4.0.2")
 
     // Client
     implementation("no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
