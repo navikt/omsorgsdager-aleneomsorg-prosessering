@@ -15,7 +15,7 @@ val handlebarsVersion = "4.2.0"
 val fuelVersion = "2.3.1"
 
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.31"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
