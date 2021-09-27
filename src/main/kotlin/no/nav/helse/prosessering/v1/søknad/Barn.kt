@@ -7,8 +7,8 @@ import java.util.*
 
 data class Barn (
     val navn: String,
-    val aktørId: String?,
-    var identitetsnummer: String?,
+    val aktørId: String,
+    var identitetsnummer: String,
     val tidspunktForAleneomsorg: TidspunktForAleneomsorg,
     val dato: LocalDate? = null
 ) {

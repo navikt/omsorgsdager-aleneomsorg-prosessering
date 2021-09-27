@@ -36,7 +36,7 @@ object SøknadUtils {
         barn = Barn(
             navn = "Ole Dole",
             identitetsnummer = "29076523302",
-            aktørId = null,
+            aktørId = "12345",
             tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
             dato = LocalDate.now().minusMonths(4)
         ),
