@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
-val dusseldorfKtorVersion = "3.1.6.4-e07c5ec"
-val k9FormatVersion = "5.1.50"
+val dusseldorfKtorVersion = "3.1.6.7-7d29e37"
+val k9FormatVersion = "5.6"
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -15,13 +15,13 @@ val handlebarsVersion = "4.3.0"
 val fuelVersion = "2.3.1"
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    id("com.github.johnrengelman.shadow") version "7.1.0"
+    kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.1.1"
 }
 
 buildscript {
     // Henter ut diverse dependency versjoner, i.e. ktorVersion.
-    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/e07c5ecf831928eb250c946e753aff2a3b798295/gradle/dusseldorf-ktor.gradle.kts")
+    apply("https://raw.githubusercontent.com/navikt/dusseldorf-ktor/109ae9ba66daf97083e807d314a515fd72d6e69c/gradle/dusseldorf-ktor.gradle.kts")
 }
 
 dependencies {
@@ -40,7 +40,6 @@ dependencies {
 
     //K9-format
     implementation("no.nav.k9:soknad:$k9FormatVersion")
-    implementation ( "org.glassfish:jakarta.el:3.0.3")
 
     // Client
     implementation("no.nav.helse:dusseldorf-ktor-client:$dusseldorfKtorVersion")
@@ -82,13 +81,13 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_12
-    targetCompatibility = JavaVersion.VERSION_12
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<ShadowJar> {
