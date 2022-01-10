@@ -44,14 +44,14 @@ internal class JournalforingsStream(
                         logger.info(formaterStatuslogging(soknadId, "journalføres"))
 
                         val preprosessertMelding = entry.deserialiserTilPreprosessertMelding()
-                        val dokumenter = preprosessertMelding.dokumentUrls
+                        val dokumentId = preprosessertMelding.dokumentId
 
-                        logger.info("Journalfører dokumenter: {}", dokumenter)
+                        logger.info("Journalfører dokumenter: {}", dokumentId)
                         val journalPostId = joarkGateway.journalfør(
                             mottatt = preprosessertMelding.mottatt,
                             norskIdent = preprosessertMelding.søker.fødselsnummer,
                             correlationId = CorrelationId(entry.metadata.correlationId),
-                            dokumenter = dokumenter,
+                            dokumentId = dokumentId,
                             navn = Navn(
                                 fornavn = preprosessertMelding.søker.fornavn,
                                 mellomnavn = preprosessertMelding.søker.mellomnavn,

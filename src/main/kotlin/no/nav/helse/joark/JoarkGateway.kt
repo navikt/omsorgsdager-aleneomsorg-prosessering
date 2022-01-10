@@ -58,7 +58,7 @@ class JoarkGateway(
         norskIdent: String,
         mottatt: ZonedDateTime,
         navn: Navn,
-        dokumenter: List<List<URI>>,
+        dokumentId: List<List<String>>,
         correlationId: CorrelationId
     ): JournalPostId {
 
@@ -67,7 +67,7 @@ class JoarkGateway(
         val joarkRequest = JoarkRequest(
             norskIdent = norskIdent,
             mottatt = mottatt,
-            dokumenter = dokumenter,
+            dokumentId = dokumentId,
             søkerNavn = navn
         )
 
@@ -111,7 +111,7 @@ private data class JoarkRequest(
     @JsonProperty("norsk_ident") val norskIdent: String,
     @JsonProperty("soker_navn") val søkerNavn: Navn,
     val mottatt: ZonedDateTime,
-    val dokumenter: List<List<URI>>
+    @JsonProperty("dokument_id") val dokumentId: List<List<String>>
 )
 
 data class Navn(
