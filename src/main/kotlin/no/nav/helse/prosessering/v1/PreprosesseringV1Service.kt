@@ -1,17 +1,20 @@
 package no.nav.helse.prosessering.v1
 
-import no.nav.helse.dokument.DokumentGateway
-import no.nav.helse.dokument.DokumentService
 import no.nav.helse.felles.AktørId
 import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.Metadata
+import no.nav.helse.k9mellomlagring.K9MellomlagringGateway.Dokument
+import no.nav.helse.k9mellomlagring.K9MellomlagringGateway.DokumentEier
+import no.nav.helse.k9mellomlagring.K9MellomlagringService
+import no.nav.helse.k9mellomlagring.Søknadsformat
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import no.nav.helse.prosessering.v1.søknad.PreprosessertMeldingV1
 import org.slf4j.LoggerFactory
+import java.net.URI
 
 internal class PreprosesseringV1Service(
     private val pdfV1Generator: PdfV1Generator,
-    private val dokumentService: DokumentService
+    private val k9MellomlagringService: K9MellomlagringService
 ) {
 
     private companion object {
@@ -23,35 +26,37 @@ internal class PreprosesseringV1Service(
         metadata: Metadata
     ): PreprosessertMeldingV1 {
         val correlationId = CorrelationId(metadata.correlationId)
-        val dokumentEier = DokumentGateway.DokumentEier(melding.søker.fødselsnummer)
+        val dokumentEier = DokumentEier(melding.søker.fødselsnummer)
 
-        logger.trace("Genererer Oppsummerings-PDF av søknaden.")
+        logger.info("Genererer Oppsummerings-PDF av søknaden.")
         val søknadOppsummeringPdf = pdfV1Generator.generateSoknadOppsummeringPdf(melding)
-        logger.trace("Generering av Oppsummerings-PDF OK.")
 
-        logger.trace("Mellomlagrer Oppsummerings-PDF.")
-        val soknadOppsummeringPdfUrl = dokumentService.lagreSoknadsOppsummeringPdf(
-            pdf = søknadOppsummeringPdf,
-            correlationId = correlationId,
-            dokumentEier = dokumentEier,
-            dokumentbeskrivelse = "Omsorgsdager - Melding om aleneomsorg"
-        )
-
-        logger.trace("Mellomlagring av Oppsummerings-PDF OK")
-
-        logger.trace("Mellomlagrer Oppsummerings-JSON")
-
-        val søknadJsonUrl = dokumentService.lagreSoknadsMelding(
-            k9Format = melding.k9Søknad,
-            dokumentEier = dokumentEier,
+        logger.info("Mellomlagrer Oppsummerings-PDF.")
+        val oppsummeringPdfVedleggId = k9MellomlagringService.lagreDokument(
+            dokument = Dokument(
+                eier = dokumentEier,
+                content = søknadOppsummeringPdf,
+                contentType = "application/pdf",
+                title = "Omsorgsdager - Melding om aleneomsorg"
+            ),
             correlationId = correlationId
-        )
+        ).vedleggId()
 
-        logger.trace("Mellomlagrer Oppsummerings-JSON OK.")
+        logger.info("Mellomlagrer Oppsummerings-JSON")
+        val søknadJsonVedleggId = k9MellomlagringService.lagreDokument(
+            dokument = Dokument(
+                eier = dokumentEier,
+                content = Søknadsformat.somJson(melding.k9Søknad),
+                contentType = "application/json",
+                title = "Omsorgsdager - Melding om aleneomsorg som JSON"
+            ),
+            correlationId = correlationId
+        ).vedleggId()
+
         val komplettDokumentUrls = mutableListOf(
             listOf(
-                soknadOppsummeringPdfUrl,
-                søknadJsonUrl
+                oppsummeringPdfVedleggId,
+                søknadJsonVedleggId
             )
         )
 
@@ -59,7 +64,7 @@ internal class PreprosesseringV1Service(
 
         val preprosessertMeldingV1 = PreprosessertMeldingV1(
             melding = melding,
-            dokumentUrls = komplettDokumentUrls.toList(),
+            dokumentId = komplettDokumentUrls.toList(),
             søkerAktørId = AktørId(melding.søker.aktørId)
         )
 
@@ -68,3 +73,5 @@ internal class PreprosesseringV1Service(
     }
 
 }
+
+fun URI.vedleggId(): String = this.toString().substringAfterLast("/")

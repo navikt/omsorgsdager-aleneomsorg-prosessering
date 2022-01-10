@@ -1,10 +1,10 @@
 package no.nav.helse.prosessering.v1.asynkron
 
-import no.nav.helse.dokument.DokumentGateway
-import no.nav.helse.dokument.DokumentService
 import no.nav.helse.felles.CorrelationId
 import no.nav.helse.felles.formaterStatuslogging
 import no.nav.helse.felles.tilK9Beskjed
+import no.nav.helse.k9mellomlagring.K9MellomlagringGateway
+import no.nav.helse.k9mellomlagring.K9MellomlagringService
 import no.nav.helse.kafka.KafkaConfig
 import no.nav.helse.kafka.ManagedKafkaStreams
 import no.nav.helse.kafka.ManagedStreamHealthy
@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory
 
 internal class CleanupStream(
     kafkaConfig: KafkaConfig,
-    dokumentService: DokumentService
+    k9MellomlagringService: K9MellomlagringService
 ) {
     private val stream = ManagedKafkaStreams(
         name = NAME,
         properties = kafkaConfig.stream(NAME),
-        topology = topology(dokumentService),
+        topology = topology(k9MellomlagringService),
         unreadyAfterStreamStoppedIn = kafkaConfig.unreadyAfterStreamStoppedIn
     )
 
@@ -31,7 +31,7 @@ internal class CleanupStream(
         private const val NAME = "CleanupV1"
         private val logger = LoggerFactory.getLogger("no.nav.$NAME.topology")
 
-        private fun topology(dokumentService: DokumentService): Topology {
+        private fun topology(k9MellomlagringService: K9MellomlagringService): Topology {
             val builder = StreamsBuilder()
             val fraCleanup = Topics.CLEANUP
             val tilK9DittnavVarsel = Topics.K9_DITTNAV_VARSEL
@@ -45,9 +45,9 @@ internal class CleanupStream(
 
                         logger.info(formaterStatuslogging(cleanupMelding.melding.søknadId, "kjører cleanup"))
 
-                        dokumentService.slettDokumeter(
-                            urlBolks = cleanupMelding.melding.dokumentUrls,
-                            dokumentEier = DokumentGateway.DokumentEier(cleanupMelding.melding.søker.fødselsnummer),
+                        k9MellomlagringService.slettDokumeter(
+                            dokumentIdBolks = cleanupMelding.melding.dokumentId,
+                            dokumentEier = K9MellomlagringGateway.DokumentEier(cleanupMelding.melding.søker.fødselsnummer),
                             correlationId = CorrelationId(entry.metadata.correlationId)
                         )
 

@@ -3,7 +3,6 @@ package no.nav.helse.prosessering.v1.søknad
 import com.fasterxml.jackson.annotation.JsonFormat
 import no.nav.helse.felles.AktørId
 import no.nav.k9.søknad.Søknad
-import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
@@ -11,7 +10,7 @@ data class PreprosessertMeldingV1(
     val søknadId: String,
     val mottatt: ZonedDateTime,
     val språk: String?,
-    val dokumentUrls: List<List<URI>>,
+    val dokumentId: List<List<String>>,
     val søker: PreprosessertSøker,
     val barn: Barn,
     val k9Søknad: Søknad,
@@ -20,13 +19,13 @@ data class PreprosessertMeldingV1(
 ) {
     internal constructor(
         melding: MeldingV1,
-        dokumentUrls: List<List<URI>>,
+        dokumentId: List<List<String>>,
         søkerAktørId: AktørId
     ) : this(
         språk = melding.språk,
         søknadId = melding.søknadId,
         mottatt = melding.mottatt,
-        dokumentUrls = dokumentUrls,
+        dokumentId = dokumentId,
         søker = PreprosessertSøker(melding.søker, søkerAktørId),
         barn = melding.barn,
         k9Søknad = melding.k9Søknad,
