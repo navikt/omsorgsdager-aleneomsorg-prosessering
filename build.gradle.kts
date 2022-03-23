@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
-val dusseldorfKtorVersion = "3.1.6.7-05da1a0"
+val dusseldorfKtorVersion = "3.1.6.8-248832c"
 val k9FormatVersion = "5.8.3"
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
