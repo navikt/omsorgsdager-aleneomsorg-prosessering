@@ -22,6 +22,7 @@ spec:
       application: omsorgsdager-aleneomsorg-prosessering
       access: read
 
+---
 
 apiVersion: kafka.nais.io/v1
 kind: Topic
