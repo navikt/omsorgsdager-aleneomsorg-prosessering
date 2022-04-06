@@ -19,6 +19,9 @@ spec:
       application: omsorgsdager-aleneomsorg-api
       access: readwrite
     - team: dusseldorf
+      application: k9-brukerdialog-api
+      access: write
+    - team: dusseldorf
       application: omsorgsdager-aleneomsorg-prosessering
       access: read
 
