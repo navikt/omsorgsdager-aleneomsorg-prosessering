@@ -1,9 +1,6 @@
 package no.nav.helse
 
-import no.nav.helse.prosessering.v1.søknad.Barn
-import no.nav.helse.prosessering.v1.søknad.MeldingV1
-import no.nav.helse.prosessering.v1.søknad.Søker
-import no.nav.helse.prosessering.v1.søknad.TidspunktForAleneomsorg
+import no.nav.helse.prosessering.v1.søknad.*
 import no.nav.k9.søknad.Søknad
 import no.nav.k9.søknad.felles.Versjon
 import no.nav.k9.søknad.felles.type.NorskIdentitetsnummer
@@ -35,6 +32,7 @@ object SøknadUtils {
         ),
         barn = Barn(
             navn = "Ole Dole",
+            type = TypeBarn.FRA_OPPSLAG,
             identitetsnummer = "29076523302",
             aktørId = "12345",
             tidspunktForAleneomsorg = TidspunktForAleneomsorg.SISTE_2_ÅRENE,
