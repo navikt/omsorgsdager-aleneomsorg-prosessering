@@ -3,7 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
 val dusseldorfKtorVersion = "3.1.6.8-248832c"
-val k9FormatVersion = "5.8.5"
+val k9FormatVersion = "5.8.7"
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -14,7 +14,7 @@ val handlebarsVersion = "4.3.0"
 val fuelVersion = "2.3.1"
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
