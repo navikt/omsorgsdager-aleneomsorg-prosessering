@@ -45,8 +45,7 @@ object SøknadUtils {
             no.nav.k9.søknad.felles.personopplysninger.Søker(NorskIdentitetsnummer.of(søkerFødselsnummer)),
             OmsorgspengerAleneOmsorg(
                 no.nav.k9.søknad.felles.personopplysninger.Barn().medNorskIdentitetsnummer(NorskIdentitetsnummer.of("29076523302")),
-                Periode(mottatt.toLocalDate(), null),
-                ""
+                Periode(mottatt.toLocalDate(), null)
             )
 
         ),
