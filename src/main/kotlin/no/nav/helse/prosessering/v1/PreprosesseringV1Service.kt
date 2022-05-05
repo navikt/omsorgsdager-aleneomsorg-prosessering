@@ -37,7 +37,7 @@ internal class PreprosesseringV1Service(
                 eier = dokumentEier,
                 content = søknadOppsummeringPdf,
                 contentType = "application/pdf",
-                title = "Omsorgsdager - Melding om aleneomsorg"
+                title = "Søknad om ekstra omsorgsdager ved aleneomsorg"
             ),
             correlationId = correlationId
         ).vedleggId()
@@ -48,7 +48,7 @@ internal class PreprosesseringV1Service(
                 eier = dokumentEier,
                 content = Søknadsformat.somJson(melding.k9Søknad),
                 contentType = "application/json",
-                title = "Omsorgsdager - Melding om aleneomsorg som JSON"
+                title = "Søknad om ekstra omsorgsdager ved aleneomsorg som JSON"
             ),
             correlationId = correlationId
         ).vedleggId()

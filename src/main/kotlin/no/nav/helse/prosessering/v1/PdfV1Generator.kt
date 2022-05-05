@@ -67,7 +67,7 @@ internal class PdfV1Generator {
             Context
                 .newBuilder(
                     mapOf(
-                        "tittel" to "Omsorgsdager - Melding om aleneomsorg",
+                        "tittel" to "Søknad om ekstra omsorgsdager ved aleneomsorg",
                         "søknadId" to melding.søknadId,
                         "søknadMottattDag" to melding.mottatt.withZoneSameInstant(ZONE_ID).norskDag(),
                         "søknadMottatt" to DATE_TIME_FORMATTER.format(melding.mottatt),
