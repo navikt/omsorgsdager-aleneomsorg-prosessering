@@ -89,7 +89,7 @@ fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
 
 fun KafkaConsumer<String, String>.hentCleanupMelding(
     id: String,
-    maxWaitInSeconds: Long = 20
+    maxWaitInSeconds: Long = 40
 ): String {
     val end = System.currentTimeMillis() + Duration.ofSeconds(maxWaitInSeconds).toMillis()
     while (System.currentTimeMillis() < end) {
