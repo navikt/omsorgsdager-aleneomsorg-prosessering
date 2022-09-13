@@ -2,8 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
-val dusseldorfKtorVersion = "3.2.0.2-b18c5fe"
-val k9FormatVersion = "6.0.1"
+val dusseldorfKtorVersion = "3.2.1.1-15e2e63"
+val k9FormatVersion = "6.1.5"
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
@@ -14,7 +14,7 @@ val handlebarsVersion = "4.3.0"
 val fuelVersion = "2.3.1"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -96,7 +96,7 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.4.2"
+    gradleVersion = "7.5.1"
 }
 
 tasks.withType<Test> {
