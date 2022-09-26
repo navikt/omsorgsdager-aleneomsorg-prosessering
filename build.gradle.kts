@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
-val dusseldorfKtorVersion = "3.2.1.1-15e2e63"
+val dusseldorfKtorVersion = "3.2.1.1-89912d2"
 val k9FormatVersion = "6.1.5"
 val kotlinxCoroutinesVersion = ext.get("kotlinxCoroutinesVersion").toString()
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
