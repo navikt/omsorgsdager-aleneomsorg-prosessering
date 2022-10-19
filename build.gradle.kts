@@ -10,7 +10,7 @@ val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fr
 val slf4jVersion = ext.get("slf4jVersion").toString()
 val ktorVersion = ext.get("ktorVersion").toString()
 val openhtmltopdfVersion = "1.0.10"
-val handlebarsVersion = "4.3.0"
+val handlebarsVersion = "4.3.1"
 val fuelVersion = "2.3.1"
 
 plugins {
