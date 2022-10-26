@@ -10,8 +10,6 @@ val jakartaelVersion = "4.0.2"
 
 val kafkaEmbeddedEnvVersion = ext.get("kafkaEmbeddedEnvVersion").toString()
 val kafkaVersion = ext.get("kafkaVersion").toString() // Alligned med version fra kafka-embedded-env
-val slf4jVersion = ext.get("slf4jVersion").toString()
-val ktorVersion = ext.get("ktorVersion").toString()
 val openhtmltopdfVersion = "1.0.10"
 val handlebarsVersion = "4.3.1"
 val fuelVersion = "2.3.1"
