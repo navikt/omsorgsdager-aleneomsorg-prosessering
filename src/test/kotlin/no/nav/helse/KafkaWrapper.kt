@@ -1,7 +1,5 @@
 package no.nav.helse
 
-import no.nav.common.JAASCredential
-import no.nav.common.KafkaEnvironment
 import no.nav.helse.felles.Metadata
 import no.nav.helse.prosessering.v1.asynkron.Data
 import no.nav.helse.prosessering.v1.asynkron.TopicEntry
@@ -12,66 +10,62 @@ import no.nav.helse.prosessering.v1.asynkron.Topics.PREPROSESSERT
 import no.nav.helse.prosessering.v1.asynkron.aleneomsorgKonfigurertMapper
 import no.nav.helse.prosessering.v1.søknad.MeldingV1
 import org.apache.kafka.clients.CommonClientConfigs
+import org.apache.kafka.clients.admin.AdminClient
+import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.junit.Assert.assertEquals
+import org.testcontainers.containers.KafkaContainer
+import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 import java.util.*
 
-private const val username = "srvkafkaclient"
-private const val password = "kafkaclient"
+private const val confluentVersion = "7.2.1"
+private lateinit var kafkaContainer: KafkaContainer
 
 object KafkaWrapper {
-    fun bootstrap(): KafkaEnvironment {
-        val kafkaEnvironment = KafkaEnvironment(
-            users = listOf(JAASCredential(username, password)),
-            autoStart = true,
-            withSchemaRegistry = false,
-            withSecurity = true,
-            topicNames = listOf(
-                MOTTATT.name,
-                PREPROSESSERT.name,
-                CLEANUP.name,
-                K9_DITTNAV_VARSEL.name
-            )
+    fun bootstrap(): KafkaContainer {
+        kafkaContainer = KafkaContainer(
+            DockerImageName.parse("confluentinc/cp-kafka:$confluentVersion")
         )
-        return kafkaEnvironment
+        kafkaContainer.start()
+        kafkaContainer.createTopicsForTest()
+        return kafkaContainer
     }
 }
 
-private fun KafkaEnvironment.testConsumerProperties(groupId: String): MutableMap<String, Any>? {
-    return HashMap<String, Any>().apply {
-        put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, brokersURL)
-        put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
-        put(SaslConfigs.SASL_MECHANISM, "PLAIN")
-        put(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$username\" password=\"$password\";"
+private fun KafkaContainer.createTopicsForTest() {
+    // Dette er en workaround for att testcontainers (pr. versjon 1.17.5) ikke håndterer autocreate topics
+    AdminClient.create(testProducerProperties("admin")).createTopics(
+        listOf(
+            NewTopic(MOTTATT.name, 1, 1),
+            NewTopic(PREPROSESSERT.name, 1, 1),
+            NewTopic(CLEANUP.name, 1, 1),
+            NewTopic(K9_DITTNAV_VARSEL.name, 1, 1),
         )
+    )
+}
+
+private fun KafkaContainer.testConsumerProperties(groupId: String): MutableMap<String, Any> {
+    return HashMap<String, Any>().apply {
+        put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
         put(ConsumerConfig.GROUP_ID_CONFIG, groupId)
     }
 }
 
-private fun KafkaEnvironment.testProducerProperties(clientId: String): MutableMap<String, Any>? {
+private fun KafkaContainer.testProducerProperties(clientId: String): MutableMap<String, Any> {
     return HashMap<String, Any>().apply {
-        put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, brokersURL)
-        put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
-        put(SaslConfigs.SASL_MECHANISM, "PLAIN")
-        put(
-            SaslConfigs.SASL_JAAS_CONFIG,
-            "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$username\" password=\"$password\";"
-        )
+        put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
         put(ProducerConfig.CLIENT_ID_CONFIG, clientId)
     }
 }
 
 
-fun KafkaEnvironment.cleanupKonsumer(): KafkaConsumer<String, String> {
+fun KafkaContainer.cleanupKonsumer(): KafkaConsumer<String, String> {
     val consumer = KafkaConsumer(
         testConsumerProperties("CleanupConsumer"),
         StringDeserializer(),
@@ -81,7 +75,7 @@ fun KafkaEnvironment.cleanupKonsumer(): KafkaConsumer<String, String> {
     return consumer
 }
 
-fun KafkaEnvironment.meldingsProducer() = KafkaProducer(
+fun KafkaContainer.meldingsProducer() = KafkaProducer(
     testProducerProperties("OmsorgsdagerAleneomsorgTestProducer"),
     MOTTATT.keySerializer,
     MOTTATT.serDes
@@ -121,6 +115,3 @@ fun KafkaProducer<String, TopicEntry>.leggTilMottak(soknad: MeldingV1) {
         )
     ).get()
 }
-
-fun KafkaEnvironment.username() = username
-fun KafkaEnvironment.password() = password

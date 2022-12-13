@@ -38,7 +38,7 @@ class AleneomsorgProsesseringWithMocks {
                 override fun run() {
                     logger.info("Tearing down")
                     wireMockServer.stop()
-                    kafkaEnvironment.tearDown()
+                    kafkaEnvironment.stop()
                     logger.info("Tear down complete")
                 }
             })

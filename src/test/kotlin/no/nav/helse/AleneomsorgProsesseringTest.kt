@@ -2,22 +2,23 @@ package no.nav.helse
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.typesafe.config.ConfigFactory
-import io.ktor.server.config.*
 import io.ktor.http.*
+import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.testing.*
 import io.prometheus.client.CollectorRegistry
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
-import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.wiremock.WireMockBuilder
 import no.nav.k9.søknad.JsonUtils
 import no.nav.k9.søknad.Søknad
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.testcontainers.containers.KafkaContainer
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.test.Test
@@ -50,20 +51,20 @@ class AleneomsorgProsesseringTest {
             start(wait = true)
         }
 
-        private fun getConfig(kafkaEnvironment: KafkaEnvironment?): ApplicationConfig {
+        private fun getConfig(kafkaContainer: KafkaContainer): ApplicationConfig {
             val fileConfig = ConfigFactory.load()
             val testConfig = ConfigFactory.parseMap(
                 TestConfiguration.asMap(
                     wireMockServer = wireMockServer,
-                    kafkaEnvironment = kafkaEnvironment
+                    kafkaEnvironment = kafkaContainer
                 )
             )
             val mergedConfig = testConfig.withFallback(fileConfig)
             return HoconApplicationConfig(mergedConfig)
         }
 
-        private fun newEngine(kafkaEnvironment: KafkaEnvironment?) = TestApplicationEngine(createTestEnvironment {
-            config = getConfig(kafkaEnvironment)
+        private fun newEngine(kafkaContainer: KafkaContainer) = TestApplicationEngine(createTestEnvironment {
+            config = getConfig(kafkaContainer)
         })
 
         private fun stopEngine() = engine.stop(5, 60, TimeUnit.SECONDS)
@@ -83,7 +84,7 @@ class AleneomsorgProsesseringTest {
             cleanupKonsumer.close()
             kafkaTestProducer.close()
             stopEngine()
-            kafkaEnvironment.tearDown()
+            kafkaEnvironment.stop()
             logger.info("Tear down complete")
         }
     }
@@ -91,17 +92,14 @@ class AleneomsorgProsesseringTest {
     @Test
     fun `test isready, isalive, health og metrics`() {
         with(engine) {
-            handleRequest(HttpMethod.Get, "/isready") {}.apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                handleRequest(HttpMethod.Get, "/isalive") {}.apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
-                    handleRequest(HttpMethod.Get, "/metrics") {}.apply {
-                        assertEquals(HttpStatusCode.OK, response.status())
-                        handleRequest(HttpMethod.Get, "/health") {}.apply {
-                            assertEquals(HttpStatusCode.OK, response.status())
-                        }
-                    }
-                }
+            val healthEndpoints = listOf("/isready", "/isalive", "/metrics", "/health")
+
+            val responses = healthEndpoints.map { endpoint ->
+                handleRequest(HttpMethod.Get, endpoint).response.status()
+            }
+
+            for(statusCode in responses) {
+                Assertions.assertEquals(HttpStatusCode.OK, statusCode)
             }
         }
     }
@@ -109,6 +107,16 @@ class AleneomsorgProsesseringTest {
     @Test
     fun `Gylding søknad blir prosessert av journalføringskonsumer`() {
         val søknad = SøknadUtils.gyldigSøknad()
+
+        kafkaTestProducer.leggTilMottak(søknad)
+        cleanupKonsumer
+            .hentCleanupMelding(søknad.søknadId)
+            .assertGyldigMelding(søknad.søknadId)
+    }
+
+    @Test
+    fun `Sende søknad hvor søker har D-nummer`() {
+        val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
 
         kafkaTestProducer.leggTilMottak(søknad)
         cleanupKonsumer
@@ -128,16 +136,6 @@ class AleneomsorgProsesseringTest {
 
         wireMockServer.stubJournalfor(201) // Simulerer journalføring fungerer igjen
         restartEngine()
-        cleanupKonsumer
-            .hentCleanupMelding(søknad.søknadId)
-            .assertGyldigMelding(søknad.søknadId)
-    }
-
-    @Test
-    fun `Sende søknad hvor søker har D-nummer`() {
-        val søknad = SøknadUtils.gyldigSøknad(søkerFødselsnummer = dNummerA)
-
-        kafkaTestProducer.leggTilMottak(søknad)
         cleanupKonsumer
             .hentCleanupMelding(søknad.søknadId)
             .assertGyldigMelding(søknad.søknadId)

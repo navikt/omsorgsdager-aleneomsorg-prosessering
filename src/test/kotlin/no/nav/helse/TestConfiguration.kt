@@ -1,15 +1,15 @@
 package no.nav.helse
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import no.nav.common.KafkaEnvironment
 import no.nav.helse.dusseldorf.testsupport.jws.ClientCredentials
 import no.nav.helse.dusseldorf.testsupport.wiremock.getAzureV2WellKnownUrl
+import org.testcontainers.containers.KafkaContainer
 
 object TestConfiguration {
 
     fun asMap(
         wireMockServer: WireMockServer? = null,
-        kafkaEnvironment: KafkaEnvironment? = null,
+        kafkaEnvironment: KafkaContainer? = null,
         port : Int = 8080,
         omsorgspengerJoarkBaseUrl : String? = wireMockServer?.getOmsorgspengerJoarkBaseUrl(),
         k9MellomlagringServiceDiscovery : String? = wireMockServer?.getK9MellomlagringServiceDiscovery()
@@ -18,13 +18,12 @@ object TestConfiguration {
             Pair("ktor.deployment.port","$port"),
             Pair("nav.gateways.k9_joark_url","$omsorgspengerJoarkBaseUrl"),
             Pair("nav.gateways.k9_mellomlagring_service_discovery","$k9MellomlagringServiceDiscovery"),
-            Pair("nav.authorization.api_gateway.api_key", "verysecret")
         )
 
         // Clients
         if (wireMockServer != null) {
             map["nav.auth.clients.1.alias"] = "azure-v2"
-            map["nav.auth.clients.1.client_id"] = "omsorgspenger-midlertidig-alene-prosessering"
+            map["nav.auth.clients.1.client_id"] = "omsorgspenger-aleneomsorg-prosessering"
             map["nav.auth.clients.1.private_key_jwk"] = ClientCredentials.ClientA.privateKeyJwk
             map["nav.auth.clients.1.discovery_endpoint"] = wireMockServer.getAzureV2WellKnownUrl()
             map["nav.auth.scopes.lagre-dokument"] = "k9-mellomlagring/.default"
@@ -33,7 +32,7 @@ object TestConfiguration {
         }
 
         kafkaEnvironment?.let {
-            map["nav.kafka.bootstrap_servers"] = it.brokersURL
+            map["nav.kafka.bootstrap_servers"] = it.bootstrapServers
             map["nav.kafka.auto_offset_reset"] = "earliest"
         }
 
