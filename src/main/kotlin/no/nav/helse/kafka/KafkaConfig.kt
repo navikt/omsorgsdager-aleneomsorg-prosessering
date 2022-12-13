@@ -2,10 +2,16 @@ package no.nav.helse.kafka
 
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
 import org.apache.kafka.common.security.auth.SecurityProtocol
-import org.apache.kafka.streams.StreamsConfig.*
+import org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG
+import org.apache.kafka.streams.StreamsConfig.AT_LEAST_ONCE
+import org.apache.kafka.streams.StreamsConfig.BOOTSTRAP_SERVERS_CONFIG
+import org.apache.kafka.streams.StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG
+import org.apache.kafka.streams.StreamsConfig.EXACTLY_ONCE
+import org.apache.kafka.streams.StreamsConfig.EXACTLY_ONCE_V2
+import org.apache.kafka.streams.StreamsConfig.PROCESSING_GUARANTEE_CONFIG
+import org.apache.kafka.streams.StreamsConfig.REPLICATION_FACTOR_CONFIG
 import org.apache.kafka.streams.errors.LogAndFailExceptionHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -29,7 +35,6 @@ internal class KafkaConfig(
         put(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndFailExceptionHandler::class.java)
         put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset)
         put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed")
-        if(trustStore == null || keyStore == null) medCredentials(Pair("srvkafkaclient", "kafkaclient")) //For å skille mellom test/miljø
         medTrustStore(trustStore)
         medKeyStore(keyStore)
         medProcessingGuarantee(exactlyOnce)
@@ -42,8 +47,8 @@ internal class KafkaConfig(
 
 private fun Properties.medProcessingGuarantee(exactlyOnce: Boolean) {
     if (exactlyOnce) {
-        logger.info("$PROCESSING_GUARANTEE_CONFIG=$EXACTLY_ONCE")
-        put(PROCESSING_GUARANTEE_CONFIG, EXACTLY_ONCE)
+        logger.info("$PROCESSING_GUARANTEE_CONFIG=$EXACTLY_ONCE_V2")
+        put(PROCESSING_GUARANTEE_CONFIG, EXACTLY_ONCE_V2)
         put(REPLICATION_FACTOR_CONFIG, "3")
     } else {
         logger.info("$PROCESSING_GUARANTEE_CONFIG=$AT_LEAST_ONCE")
@@ -77,13 +82,4 @@ private fun Properties.medKeyStore(keyStore: Pair<String, String>?) {
             logger.info("Keystore på '${it.first}' konfigurert.")
         } catch (cause: Throwable) {}
     }
-}
-
-private fun Properties.medCredentials(credentials: Pair<String, String>) {
-    put(SaslConfigs.SASL_MECHANISM, "PLAIN")
-    put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
-    put(
-        SaslConfigs.SASL_JAAS_CONFIG,
-        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${credentials.first}\" password=\"${credentials.second}\";"
-    )
 }
