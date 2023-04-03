@@ -1,14 +1,14 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-val dusseldorfKtorVersion = "3.2.2.1-4942135"
-val ktorVersion = "2.2.1"
-val slf4jVersion = "2.0.6"
+val dusseldorfKtorVersion = "3.2.2.4-f09ec97"
+val ktorVersion = "2.2.4"
+val slf4jVersion = "2.0.7"
 val kotlinxCoroutinesVersion = "1.6.4"
 
-val k9FormatVersion = "8.0.0"
+val k9FormatVersion = "8.0.8"
 
 val kafkaTestcontainerVersion = "1.17.6"
-val kafkaVersion = "3.3.1"
+val kafkaVersion = "3.4.0"
 val openhtmltopdfVersion = "1.0.10"
 val handlebarsVersion = "4.3.1"
 val fuelVersion = "2.3.1"
@@ -16,8 +16,8 @@ val fuelVersion = "2.3.1"
 val mainClass = "no.nav.helse.AleneomsorgProsesseringKt"
 
 plugins {
-    kotlin("jvm") version "1.7.22"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "1.8.10"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 dependencies {
@@ -92,7 +92,7 @@ tasks.withType<ShadowJar> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.5.1"
+    gradleVersion = "8.0.2"
 }
 
 tasks.withType<Test> {
