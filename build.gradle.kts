@@ -1,6 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-val dusseldorfKtorVersion = "3.2.2.4-f09ec97"
+val dusseldorfKtorVersion = "3.2.3.0-f979367"
 val ktorVersion = "2.2.4"
 val slf4jVersion = "2.0.7"
 val kotlinxCoroutinesVersion = "1.6.4"
